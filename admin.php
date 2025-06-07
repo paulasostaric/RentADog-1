@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     }
 }
 $dogs = $pdo->query('SELECT * FROM dogs')->fetchAll();
-$users = $pdo->query('SELECT id, username FROM users')->fetchAll();
+$users = $pdo->query("SELECT id, username FROM users WHERE role='user'")->fetchAll();
 $reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.duration,r.location FROM reservations r JOIN dogs d ON r.dog_id=d.id LEFT JOIN users u ON r.reserved_by_user=u.id ORDER BY r.reserved_for DESC')->fetchAll();
 ?>
 <!DOCTYPE html>
@@ -42,8 +42,9 @@ $reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.dura
 </ul>
 <?php if($tab==='dogs'): ?>
   <h2>Upravljanje psima</h2>
+  <p><a href="dog_form.php" class="btn btn-sm btn-success">Dodaj psa</a></p>
   <table class="table table-bordered">
-  <thead><tr><th>ID</th><th>Ime</th><th>Pasmina</th><th></th></tr></thead>
+  <thead><tr><th>ID</th><th>Ime</th><th>Pasmina</th><th>Akcije</th></tr></thead>
   <tbody>
   <?php foreach($dogs as $d): ?>
     <tr>
@@ -51,6 +52,7 @@ $reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.dura
       <td><?= htmlspecialchars($d['name']) ?></td>
       <td><?= htmlspecialchars($d['breed']) ?></td>
       <td>
+        <a href="dog_form.php?id=<?= $d['id'] ?>" class="btn btn-sm btn-secondary">Uredi</a>
         <form method="post" class="d-inline">
           <button name="delete_dog" value="<?= $d['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Brisanje?')">Obriši</button>
         </form>
@@ -61,12 +63,13 @@ $reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.dura
 <?php elseif($tab==='users'): ?>
   <h2>Korisnici</h2>
   <table class="table table-bordered">
-  <thead><tr><th>ID</th><th>Korisničko ime</th><th></th></tr></thead>
+  <thead><tr><th>ID</th><th>Korisničko ime</th><th>Pregled</th><th></th></tr></thead>
   <tbody>
   <?php foreach($users as $u): ?>
     <tr>
       <td><?= $u['id'] ?></td>
       <td><?= htmlspecialchars($u['username']) ?></td>
+      <td><a class="btn btn-sm btn-secondary" href="user_account.php?id=<?= $u['id'] ?>">Pregled</a></td>
       <td>
         <form method="post" class="d-inline">
           <button name="delete_user" value="<?= $u['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Brisanje?')">Obriši</button>

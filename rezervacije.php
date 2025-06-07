@@ -71,23 +71,18 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
 function renderCalendar($year, $month, $reserved) {
     $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
     $firstWeekday = (int)date('w', strtotime("$year-$month-01"));
-    $html = '<table class="table table-bordered text-center" id="calendarTable">';
+    $html = '<table class="table table-bordered text-center align-middle" id="calendarTable">';
     $html .= '<thead class="table-light"><tr>';
     foreach(['Ned','Pon','Uto','Sri','Čet','Pet','Sub'] as $wd){$html .= "<th>$wd</th>";}
     $html .= '</tr></thead><tbody><tr>';
     for($i=0;$i<$firstWeekday;$i++){$html .= '<td></td>';}
     for($day=1;$day<=$days;$day++) {
         $date = sprintf('%04d-%02d-%02d',$year,$month,$day);
-        $html .= '<td>' . $day . '<br>';
-        foreach(["morning"=>"J","evening"=>"V"] as $slot=>$label){
-            if(isset($reserved[$date][$slot])){
-                $html .= "<button class='btn btn-sm btn-danger mt-1' disabled>$label</button>";
-            }else{
-                $val = $date.'|'.$slot;
-                $html .= "<button form='resForm' name='reserve_slot' value='$val' class='btn btn-sm btn-outline-primary mt-1'>$label</button>";
-            }
-        }
-        $html .= '</td>';
+        $morningFree = isset($reserved[$date]['morning']) ? 0 : 1;
+        $eveningFree = isset($reserved[$date]['evening']) ? 0 : 1;
+        $class = 'calendar-day';
+        if(!$morningFree && !$eveningFree){ $class .= ' table-danger'; }
+        $html .= "<td class='$class' data-date='$date' data-morning='$morningFree' data-evening='$eveningFree'>$day</td>";
         if (date('w', strtotime($date)) == 6 && $day != $days) {$html .= '</tr><tr>';}
     }
     $lastWeekday = (int)date('w', strtotime("$year-$month-$days"));
@@ -105,6 +100,10 @@ $month = date('n');
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rezervacije | ProšećiMe</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    #calendarTable td {cursor:pointer;}
+    #calendarTable td.table-danger {cursor:not-allowed;}
+  </style>
 </head>
 <body>
 <?php include __DIR__ . '/elementi/nav.php'; ?>
@@ -166,6 +165,11 @@ $month = date('n');
     <input type="hidden" name="duration" value="<?=$duration?>">
     <input type="hidden" name="location" value="<?=htmlspecialchars($location)?>">
     <?= renderCalendar($year,$month,$reserved) ?>
+    <div id="timeOptions" class="d-none mt-3">
+      <p class="mb-2">Odabrani datum: <span id="selDate"></span></p>
+      <button class="btn btn-outline-primary me-2" id="morningBtn" name="reserve_slot" value="">Jutarnja (9:00)</button>
+      <button class="btn btn-outline-primary" id="eveningBtn" name="reserve_slot" value="">Večernja (18:00)</button>
+    </div>
   </form>
   <?php if (empty($_SESSION['user_id'])): ?>
     <p class="text-warning mt-3">Za rezervaciju se <a href="prijava.php">prijavite</a>.</p>
@@ -174,5 +178,28 @@ $month = date('n');
 </main>
 <?php include __DIR__ . '/elementi/footer.php'; ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.querySelectorAll('#calendarTable td[data-date]').forEach(td=>{
+  const mBtn=document.getElementById('morningBtn');
+  const eBtn=document.getElementById('eveningBtn');
+  const sel=document.getElementById('selDate');
+  const opt=document.getElementById('timeOptions');
+  if(td.dataset.morning==='1' || td.dataset.evening==='1'){
+    td.addEventListener('click',()=>{
+      document.querySelectorAll('#calendarTable .table-primary').forEach(c=>c.classList.remove('table-primary'));
+      td.classList.add('table-primary');
+      const d=td.dataset.date.split('-').reverse().join('.');
+      sel.textContent=d;
+      mBtn.disabled = td.dataset.morning!=='1';
+      eBtn.disabled = td.dataset.evening!=='1';
+      mBtn.value=td.dataset.date+'|morning';
+      eBtn.value=td.dataset.date+'|evening';
+      opt.classList.remove('d-none');
+    });
+  } else {
+    td.classList.add('table-danger');
+  }
+});
+</script>
 </body>
 </html>

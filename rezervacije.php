@@ -15,12 +15,12 @@ function load_dog_and_reservations($dog_id, &$reservations, &$reserved, $pdo) {
     $stmt->execute([$dog_id]);
     $dog = $stmt->fetch();
     if(!$dog) return null;
-    $stmt = $pdo->prepare("SELECT id, reserved_for, reserved_by_user FROM reservations WHERE dog_id=? ORDER BY reserved_for");
+    $stmt = $pdo->prepare("SELECT id, reserved_for, time_slot, reserved_by_user FROM reservations WHERE dog_id=? ORDER BY reserved_for, time_slot");
     $stmt->execute([$dog_id]);
     $reservations = $stmt->fetchAll();
     $reserved = [];
     foreach($reservations as $r){
-        $reserved[$r['reserved_for']] = ['id'=>$r['id'],'user'=>$r['reserved_by_user']];
+        $reserved[$r['reserved_for']][$r['time_slot']] = ['id'=>$r['id'],'user'=>$r['reserved_by_user']];
     }
     return $dog;
 }
@@ -44,20 +44,20 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                 $available_dogs = $dogs;
             }
         }
-    } elseif(isset($_POST['reserve_date'], $_POST['dog_id'])) {
+    } elseif(isset($_POST['reserve_slot'], $_POST['dog_id'])) {
         $dog_id = (int)$_POST['dog_id'];
         $duration = (int)($_POST['duration'] ?? 60);
         $location = $_POST['location'] ?? '';
         $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
         if($dog) {
-            $date = $_POST['reserve_date'];
-            if (!isset($reserved[$date]) && isset($_SESSION['user_id'])) {
-                $pdo->prepare("INSERT INTO reservations(dog_id,reserved_for,duration,location,reserved_by_user) VALUES(?,?,?,?,?)")
-                    ->execute([$dog_id,$date,$duration,$location,$_SESSION['user_id']]);
-                $feedback = "Rezervirano za $date.";
+            list($date,$slot) = explode('|', $_POST['reserve_slot']);
+            if (!isset($reserved[$date][$slot]) && isset($_SESSION['user_id'])) {
+                $pdo->prepare("INSERT INTO reservations(dog_id,reserved_for,time_slot,duration,location,reserved_by_user) VALUES(?,?,?,?,?,?)")
+                    ->execute([$dog_id,$date,$slot,$duration,$location,$_SESSION['user_id']]);
+                $feedback = "Rezervirano za $date ($slot).";
                 $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
             } else {
-                $feedback = isset($reserved[$date]) ? 'Datum je već rezerviran.' : 'Prijavite se za rezervaciju.';
+                $feedback = isset($reserved[$date][$slot]) ? 'Termin je već rezerviran.' : 'Prijavite se za rezervaciju.';
             }
         }
     } elseif(isset($_POST['dog_id'])) {
@@ -78,13 +78,16 @@ function renderCalendar($year, $month, $reserved) {
     for($i=0;$i<$firstWeekday;$i++){$html .= '<td></td>';}
     for($day=1;$day<=$days;$day++) {
         $date = sprintf('%04d-%02d-%02d',$year,$month,$day);
-        if(isset($reserved[$date])) {
-            $html .= "<td class=\"bg-danger text-white\">$day</td>";
-        } else {
-            $html .= "<td class=\"bg-success text-white\">";
-            $html .= "<button form='resForm' name='reserve_date' value='$date' class='btn btn-sm btn-success'>$day</button>";
-            $html .= '</td>';
+        $html .= '<td>' . $day . '<br>';
+        foreach(["morning"=>"J","evening"=>"V"] as $slot=>$label){
+            if(isset($reserved[$date][$slot])){
+                $html .= "<button class='btn btn-sm btn-danger mt-1' disabled>$label</button>";
+            }else{
+                $val = $date.'|'.$slot;
+                $html .= "<button form='resForm' name='reserve_slot' value='$val' class='btn btn-sm btn-outline-primary mt-1'>$label</button>";
+            }
         }
+        $html .= '</td>';
         if (date('w', strtotime($date)) == 6 && $day != $days) {$html .= '</tr><tr>';}
     }
     $lastWeekday = (int)date('w', strtotime("$year-$month-$days"));

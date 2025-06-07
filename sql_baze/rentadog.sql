@@ -74,6 +74,7 @@ CREATE TABLE `reservations` (
   `id` int(10) UNSIGNED NOT NULL,
   `dog_id` int(10) UNSIGNED NOT NULL,
   `reserved_for` date NOT NULL,
+  `time_slot` enum('morning','evening') NOT NULL DEFAULT 'morning',
   `duration` int(10) UNSIGNED NOT NULL DEFAULT 60,
   `location` varchar(50) NOT NULL,
   `reserved_by_user` int(10) UNSIGNED DEFAULT NULL,
@@ -84,9 +85,9 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`id`, `dog_id`, `reserved_for`, `duration`, `location`, `reserved_by_user`, `created_at`) VALUES
-(5, 2, '2025-06-10', 60, 'park', 2, '2025-06-07 13:24:13'),
-(6, 20, '2025-06-17', 60, 'Šuma', 1, '2025-06-07 15:28:39');
+INSERT INTO `reservations` (`id`, `dog_id`, `reserved_for`, `time_slot`, `duration`, `location`, `reserved_by_user`, `created_at`) VALUES
+(5, 2, '2025-06-10', 'morning', 60, 'park', 2, '2025-06-07 13:24:13'),
+(6, 20, '2025-06-17', 'evening', 60, 'Šuma', 1, '2025-06-07 15:28:39');
 
 -- --------------------------------------------------------
 
@@ -98,6 +99,8 @@ CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `username` varchar(50) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `phone` varchar(30) DEFAULT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `role` enum('user','admin') NOT NULL DEFAULT 'user'
@@ -107,9 +110,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password_hash`, `is_admin`, `created_at`, `role`) VALUES
-(1, 'admin', '$2y$10$LqY1POgJ0QOisS7TqE.UC.NnlN3wjFJSQW.BwswnsFLtlEDVaD3Ha', 1, '2025-06-07 10:59:57', 'admin'),
-(2, 'paula', '$2y$10$ptlFK.Hq89ETLXaffu3W5OBLLHDodJ6TvrGMHu1IeonXkM/3QwMKu', 0, '2025-06-07 12:35:23', 'user');
+INSERT INTO `users` (`id`, `username`, `password_hash`, `email`, `phone`, `is_admin`, `created_at`, `role`) VALUES
+(1, 'admin', '$2y$10$LqY1POgJ0QOisS7TqE.UC.NnlN3wjFJSQW.BwswnsFLtlEDVaD3Ha', NULL, NULL, 1, '2025-06-07 10:59:57', 'admin'),
+(2, 'paula', '$2y$10$ptlFK.Hq89ETLXaffu3W5OBLLHDodJ6TvrGMHu1IeonXkM/3QwMKu', NULL, NULL, 0, '2025-06-07 12:35:23', 'user');
 
 --
 -- Indexes for dumped tables

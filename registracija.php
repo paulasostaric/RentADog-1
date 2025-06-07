@@ -10,6 +10,8 @@ $username = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Dohvati podatke iz forme
     $username  = trim($_POST['username']  ?? '');
+    $email     = trim($_POST['email']     ?? '');
+    $phone     = trim($_POST['phone']     ?? '');
     $password  = $_POST['password']  ?? '';
     $password2 = $_POST['password2'] ?? '';
 
@@ -36,9 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 3) Ako nema grešaka, ubaci novog korisnika u bazu
     if (empty($errors)) {
         $pw_hash = password_hash($password, PASSWORD_DEFAULT);
-        $sql     = "INSERT INTO users (username, password_hash) VALUES (?, ?)";
+        $sql     = "INSERT INTO users (username,email,phone,password_hash) VALUES (?,?,?,?)";
         $upit    = $pdo->prepare($sql);
-        $upit->execute([$username, $pw_hash]);
+        $upit->execute([$username,$email,$phone,$pw_hash]);
 
         // Pohrani u sesiju i preusmjeri na početnu
         $_SESSION['username'] = $username;
@@ -107,6 +109,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                class="form-control"
                value="<?= htmlspecialchars($username) ?>"
                required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" class="form-control" value="<?= htmlspecialchars($email ?? '') ?>">
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Mobitel</label>
+        <input type="text" id="phone" name="phone" class="form-control" value="<?= htmlspecialchars($phone ?? '') ?>">
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Lozinka</label>

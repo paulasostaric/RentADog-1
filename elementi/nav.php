@@ -36,9 +36,12 @@ $user    = $_SESSION['username'] ?? null;
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
               <li><a class="dropdown-item" href="logout.php">Odjava</a></li>
-              <?php if (($role = $_SESSION['role'] ?? '') === 'admin'): ?>
+              <?php $role = $_SESSION['role'] ?? ''; if ($role === 'admin'): ?>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="admin.php">Admin panel</a></li>
+              <?php else: ?>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="account.php">Vaš račun</a></li>
               <?php endif; ?>
             </ul>
           </li>

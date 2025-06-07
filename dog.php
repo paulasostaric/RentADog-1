@@ -36,22 +36,29 @@ for ($i = 1; $i <= 3; $i++) {
 <?php include __DIR__.'/elementi/nav.php'; ?>
 <main class="container py-5">
   <h1 class="mb-3"><?=htmlspecialchars($dog['name'])?></h1>
-  <p>
-    <strong>Pasmina:</strong> <?=htmlspecialchars($dog['breed'])?><br>
-    <strong>Rođendan:</strong> <?=date('j.n.Y',strtotime($dog['dob']))?><br>
-    <strong>Temperament:</strong> <?=htmlspecialchars($dog['temperament'])?>
-  </p>
-  <div class="row g-3 mb-4">
+  <div class="row align-items-start g-4">
     <div class="col-md-4">
-      <img src="img/<?=htmlspecialchars($dog['image'])?>" class="img-fluid rounded" alt="<?=htmlspecialchars($dog['name'])?>">
+      <p><strong>Pasmina:</strong> <?=htmlspecialchars($dog['breed'])?><br>
+         <strong>Rođendan:</strong> <?=date('j.n.Y',strtotime($dog['dob']))?><br>
+         <strong>Temperament:</strong> <?=htmlspecialchars($dog['temperament'])?></p>
+      <form method="post" action="rezervacije.php">
+        <input type="hidden" name="dog_id" value="<?=$dog['id']?>">
+        <button class="btn btn-primary">Rezerviraj šetnju</button>
+      </form>
     </div>
-<?php foreach ($additional as $img): ?>
+    <div class="col-md-8 text-center">
+      <img src="img/<?=htmlspecialchars($dog['image'])?>" class="img-fluid rounded mb-3" style="max-height:400px" alt="<?=htmlspecialchars($dog['name'])?>">
+    </div>
+  </div>
+<?php if($additional): ?>
+  <div class="row g-3 mt-2">
+  <?php foreach ($additional as $img): ?>
     <div class="col-md-4">
       <img src="<?=htmlspecialchars($img)?>" class="img-fluid rounded" alt="<?=htmlspecialchars($dog['name'])?>">
     </div>
-<?php endforeach; ?>
+  <?php endforeach; ?>
   </div>
-  <p>Za rezervacije posjetite stranicu <a href="rezervacije.php">Rezervacije</a>.</p>
+<?php endif; ?>
 </main>
 <?php include __DIR__.'/elementi/footer.php'; ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

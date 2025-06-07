@@ -17,7 +17,7 @@ if(!$account){
     echo 'Korisnik nije pronađen.';
     exit;
 }
-$res = $pdo->prepare('SELECT r.id,d.name,r.reserved_for,r.duration,r.location FROM reservations r JOIN dogs d ON r.dog_id=d.id WHERE r.reserved_by_user=? ORDER BY r.reserved_for DESC');
+$res = $pdo->prepare('SELECT r.id,d.name,r.reserved_for,r.time_slot,r.duration,r.location FROM reservations r JOIN dogs d ON r.dog_id=d.id WHERE r.reserved_by_user=? ORDER BY r.reserved_for DESC');
 $res->execute([$user_id]);
 $reservations = $res->fetchAll();
 ?>
@@ -35,13 +35,14 @@ $reservations = $res->fetchAll();
 <h1 class="mb-4">Račun korisnika <?= htmlspecialchars($account['username']) ?></h1>
 <?php if($reservations): ?>
 <table class="table table-bordered">
-<thead><tr><th>ID</th><th>Pas</th><th>Datum</th><th>Trajanje</th><th>Lokacija</th></tr></thead>
+<thead><tr><th>ID</th><th>Pas</th><th>Datum</th><th>Termin</th><th>Trajanje</th><th>Lokacija</th></tr></thead>
 <tbody>
 <?php foreach($reservations as $r): ?>
 <tr>
   <td><?= $r['id'] ?></td>
   <td><?= htmlspecialchars($r['name']) ?></td>
   <td><?= htmlspecialchars($r['reserved_for']) ?></td>
+  <td><?= $r['time_slot']==='morning'?'Jutro':'Večer' ?></td>
   <td><?= (int)$r['duration'] ?> min</td>
   <td><?= htmlspecialchars($r['location']) ?></td>
 </tr>

@@ -72,6 +72,8 @@ CREATE TABLE `reservations` (
   `id` int(10) UNSIGNED NOT NULL,
   `dog_id` int(10) UNSIGNED NOT NULL,
   `reserved_for` date NOT NULL,
+  `duration` int(10) UNSIGNED NOT NULL DEFAULT 60,
+  `location` varchar(50) NOT NULL,
   `reserved_by_user` int(10) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -80,8 +82,8 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`id`, `dog_id`, `reserved_for`, `reserved_by_user`, `created_at`) VALUES
-(5, 2, '2025-06-10', 2, '2025-06-07 13:24:13');
+INSERT INTO `reservations` (`id`, `dog_id`, `reserved_for`, `duration`, `location`, `reserved_by_user`, `created_at`) VALUES
+(5, 2, '2025-06-10', 60, 'park', 2, '2025-06-07 13:24:13');
 
 -- --------------------------------------------------------
 

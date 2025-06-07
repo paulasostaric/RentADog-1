@@ -5,6 +5,9 @@ require_once __DIR__ . '/config/config.php';
 $dog = null;
 $reservations = [];
 $reserved = [];
+$available_dogs = [];
+$duration = 60;
+$location = '';
 $feedback = '';
 
 function load_dog_and_reservations($dog_id, &$reservations, &$reserved, $pdo) {
@@ -25,6 +28,8 @@ function load_dog_and_reservations($dog_id, &$reservations, &$reserved, $pdo) {
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     if(isset($_POST['energy'])) { // from questionnaire
         $energy = $_POST['energy'];
+        $duration = (int)($_POST['duration'] ?? 60);
+        $location = $_POST['location'] ?? '';
         if($energy === 'miran') {
             $stmt = $pdo->query("SELECT * FROM dogs WHERE temperament LIKE 'Miran%' OR temperament LIKE 'Mirna%'");
         } else {
@@ -32,17 +37,23 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         }
         $dogs = $stmt->fetchAll();
         if($dogs) {
-            $d = $dogs[array_rand($dogs)];
-            $dog = load_dog_and_reservations($d['id'], $reservations, $reserved, $pdo);
+            if(count($dogs) === 1) {
+                $d = $dogs[0];
+                $dog = load_dog_and_reservations($d['id'], $reservations, $reserved, $pdo);
+            } else {
+                $available_dogs = $dogs;
+            }
         }
     } elseif(isset($_POST['reserve_date'], $_POST['dog_id'])) {
         $dog_id = (int)$_POST['dog_id'];
+        $duration = (int)($_POST['duration'] ?? 60);
+        $location = $_POST['location'] ?? '';
         $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
         if($dog) {
             $date = $_POST['reserve_date'];
             if (!isset($reserved[$date]) && isset($_SESSION['user_id'])) {
-                $pdo->prepare("INSERT INTO reservations(dog_id,reserved_for,reserved_by_user) VALUES(?,?,?)")
-                    ->execute([$dog_id,$date,$_SESSION['user_id']]);
+                $pdo->prepare("INSERT INTO reservations(dog_id,reserved_for,duration,location,reserved_by_user) VALUES(?,?,?,?,?)")
+                    ->execute([$dog_id,$date,$duration,$location,$_SESSION['user_id']]);
                 $feedback = "Rezervirano za $date.";
                 $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
             } else {
@@ -51,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         }
     } elseif(isset($_POST['dog_id'])) {
         $dog_id = (int)$_POST['dog_id'];
+        $duration = (int)($_POST['duration'] ?? $duration);
+        $location = $_POST['location'] ?? $location;
         $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
     }
 }
@@ -94,7 +107,7 @@ $month = date('n');
 <?php include __DIR__ . '/elementi/nav.php'; ?>
 <main class="container py-5">
   <h1 class="fw-bold text-center mb-4">Rezervacije</h1>
-<?php if(!$dog): ?>
+<?php if(!$dog && empty($available_dogs)): ?>
   <form method="post" class="mb-4">
     <div class="mb-3">
       <label class="form-label">Koliko želite da traje šetnja?</label>
@@ -121,6 +134,22 @@ $month = date('n');
     </div>
     <button type="submit" class="btn btn-primary">Pronađi psa</button>
   </form>
+<?php elseif(!empty($available_dogs)): ?>
+  <h2 class="mb-3">Odaberite psa</h2>
+  <div class="row">
+  <?php foreach($available_dogs as $d): ?>
+    <div class="col-md-4 text-center mb-3">
+      <img src="img/<?=htmlspecialchars($d['image'])?>" class="img-fluid mb-2" style="max-height:150px" alt="<?=htmlspecialchars($d['name'])?>">
+      <p class="fw-semibold mb-1"><?=htmlspecialchars($d['name'])?></p>
+      <form method="post">
+        <input type="hidden" name="dog_id" value="<?=$d['id']?>">
+        <input type="hidden" name="duration" value="<?=$duration?>">
+        <input type="hidden" name="location" value="<?=htmlspecialchars($location)?>">
+        <button class="btn btn-primary">Odaberi</button>
+      </form>
+    </div>
+  <?php endforeach; ?>
+  </div>
 <?php else: ?>
   <h2 class="mb-3">Preporučeni pas: <?=htmlspecialchars($dog['name'])?></h2>
   <p><strong>Pasmina:</strong> <?=htmlspecialchars($dog['breed'])?>,<br>
@@ -131,6 +160,8 @@ $month = date('n');
   <?php endif; ?>
   <form method="post" id="resForm">
     <input type="hidden" name="dog_id" value="<?=$dog['id']?>">
+    <input type="hidden" name="duration" value="<?=$duration?>">
+    <input type="hidden" name="location" value="<?=htmlspecialchars($location)?>">
     <?= renderCalendar($year,$month,$reserved) ?>
   </form>
   <?php if (empty($_SESSION['user_id'])): ?>

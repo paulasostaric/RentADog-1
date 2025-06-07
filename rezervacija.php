@@ -25,6 +25,12 @@
     <!-- Calendar -->
     <div class="table-responsive"><table class="table table-bordered text-center align-middle" id="calendarTable"><thead class="table-light"><tr><th>Pon</th><th>Uto</th><th>Sri</th><th>Čet</th><th>Pet</th><th>Sub</th><th>Ned</th></tr></thead><tbody></tbody></table></div>
     <p class="small text-muted">Crveno = zauzeto.</p>
+    <div id="timeOptions" class="d-none mt-3">
+      <p class="mb-2">Odabrani datum: <span id="selDate"></span></p>
+      <button class="btn btn-outline-primary me-2" id="morningBtn">Jutarnja (9:00)</button>
+      <button class="btn btn-outline-primary" id="eveningBtn">Večernja (18:00)</button>
+    </div>
+    <p class="mt-4">Lokacija preuzimanja psa: <strong>Sklonište Dumovec</strong></p>
   </div>
 </main>
 
@@ -33,7 +39,44 @@
 <script>
   const u=localStorage.getItem('username');if(u){document.getElementById('loginBtn').textContent=u;document.getElementById('bookingForm').classList.remove('d-none');}else{document.getElementById('authNotice').classList.remove('d-none');}
   // simple calendar
-  function genCal(){const tbody=document.querySelector('#calendarTable tbody');const d=new Date();const year=d.getFullYear(),month=d.getMonth();const first=new Date(year,month,1).getDay();const days=new Date(year,month+1,0).getDate();let date=1;for(let i=0;i<6;i++){const row=document.createElement('tr');for(let j=1;j<=7;j++){const cell=document.createElement('td');if(i===0&&j<(first||7)){cell.textContent='';}else if(date>days){cell.textContent='';}else{cell.textContent=date;if(Math.random()<0.2){cell.classList.add('busy');}else{cell.classList.add('free');cell.style.cursor='pointer';cell.addEventListener('click',e=>{document.querySelectorAll('.selected').forEach(c=>c.classList.remove('selected'));e.target.classList.add('selected');alert('Odabran datum '+e.target.textContent+'.');});}date++;}row.appendChild(cell);}tbody.appendChild(row);} }
+  function genCal(){
+    const tbody=document.querySelector('#calendarTable tbody');
+    tbody.innerHTML='';
+    const d=new Date();
+    const year=d.getFullYear(),month=d.getMonth();
+    const first=new Date(year,month,1).getDay();
+    const days=new Date(year,month+1,0).getDate();
+    let date=1;
+    for(let i=0;i<6;i++){
+      const row=document.createElement('tr');
+      for(let j=1;j<=7;j++){
+        const cell=document.createElement('td');
+        if(i===0&&j<(first||7)){
+          cell.textContent='';
+        }else if(date>days){
+          cell.textContent='';
+        }else{
+          cell.textContent=date;
+          if(Math.random()<0.2){
+            cell.classList.add('busy');
+          }else{
+            cell.classList.add('free');
+            cell.style.cursor='pointer';
+            cell.addEventListener('click',e=>{
+              if(e.target.classList.contains('busy'))return;
+              document.querySelectorAll('.selected').forEach(c=>c.classList.remove('selected'));
+              e.target.classList.add('selected');
+              document.getElementById('selDate').textContent=`${e.target.textContent}.${month+1}.${year}`;
+              document.getElementById('timeOptions').classList.remove('d-none');
+            });
+          }
+          date++;
+        }
+        row.appendChild(cell);
+      }
+      tbody.appendChild(row);
+    }
+  }
   genCal();
 </script>
 </body>

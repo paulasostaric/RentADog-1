@@ -28,10 +28,10 @@ session_start();
       <div class="col-md-3">
         <select id="ageFilter" class="form-select">
           <option value="">Starost (sve)</option>
-          <option value="stenci">&lt; Štenci</option>
+          <option value="stenci">Štenci</option>
           <option value="mlad">Mladi</option>
-          <option value="odrasli">&gt; Odrasli</option>
-          <option value="stariji">&gt; Stariji</option>
+          <option value="odrasli">Odrasli</option>
+          <option value="stariji">Stariji</option>
         </select>
       </div>
       <div class="col-md-3">

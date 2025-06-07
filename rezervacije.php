@@ -1,0 +1,144 @@
+<?php
+session_start();
+require_once __DIR__ . '/config/config.php';
+
+$dog = null;
+$reservations = [];
+$reserved = [];
+$feedback = '';
+
+function load_dog_and_reservations($dog_id, &$reservations, &$reserved, $pdo) {
+    $stmt = $pdo->prepare("SELECT * FROM dogs WHERE id=?");
+    $stmt->execute([$dog_id]);
+    $dog = $stmt->fetch();
+    if(!$dog) return null;
+    $stmt = $pdo->prepare("SELECT id, reserved_for, reserved_by_user FROM reservations WHERE dog_id=? ORDER BY reserved_for");
+    $stmt->execute([$dog_id]);
+    $reservations = $stmt->fetchAll();
+    $reserved = [];
+    foreach($reservations as $r){
+        $reserved[$r['reserved_for']] = ['id'=>$r['id'],'user'=>$r['reserved_by_user']];
+    }
+    return $dog;
+}
+
+if ($_SERVER['REQUEST_METHOD']==='POST') {
+    if(isset($_POST['energy'])) { // from questionnaire
+        $energy = $_POST['energy'];
+        if($energy === 'miran') {
+            $stmt = $pdo->query("SELECT * FROM dogs WHERE temperament LIKE 'Miran%' OR temperament LIKE 'Mirna%'");
+        } else {
+            $stmt = $pdo->query("SELECT * FROM dogs WHERE temperament LIKE 'Energi%'");
+        }
+        $dogs = $stmt->fetchAll();
+        if($dogs) {
+            $d = $dogs[array_rand($dogs)];
+            $dog = load_dog_and_reservations($d['id'], $reservations, $reserved, $pdo);
+        }
+    } elseif(isset($_POST['reserve_date'], $_POST['dog_id'])) {
+        $dog_id = (int)$_POST['dog_id'];
+        $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
+        if($dog) {
+            $date = $_POST['reserve_date'];
+            if (!isset($reserved[$date]) && isset($_SESSION['user_id'])) {
+                $pdo->prepare("INSERT INTO reservations(dog_id,reserved_for,reserved_by_user) VALUES(?,?,?)")
+                    ->execute([$dog_id,$date,$_SESSION['user_id']]);
+                $feedback = "Rezervirano za $date.";
+                $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
+            } else {
+                $feedback = isset($reserved[$date]) ? 'Datum je već rezerviran.' : 'Prijavite se za rezervaciju.';
+            }
+        }
+    } elseif(isset($_POST['dog_id'])) {
+        $dog_id = (int)$_POST['dog_id'];
+        $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
+    }
+}
+
+function renderCalendar($year, $month, $reserved) {
+    $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    $firstWeekday = (int)date('w', strtotime("$year-$month-01"));
+    $html = '<table class="table table-bordered text-center" id="calendarTable">';
+    $html .= '<thead class="table-light"><tr>';
+    foreach(['Ned','Pon','Uto','Sri','Čet','Pet','Sub'] as $wd){$html .= "<th>$wd</th>";}
+    $html .= '</tr></thead><tbody><tr>';
+    for($i=0;$i<$firstWeekday;$i++){$html .= '<td></td>';}
+    for($day=1;$day<=$days;$day++) {
+        $date = sprintf('%04d-%02d-%02d',$year,$month,$day);
+        if(isset($reserved[$date])) {
+            $html .= "<td class=\"bg-danger text-white\">$day</td>";
+        } else {
+            $html .= "<td class=\"bg-success text-white\">";
+            $html .= "<button form='resForm' name='reserve_date' value='$date' class='btn btn-sm btn-success'>$day</button>";
+            $html .= '</td>';
+        }
+        if (date('w', strtotime($date)) == 6 && $day != $days) {$html .= '</tr><tr>';}
+    }
+    $lastWeekday = (int)date('w', strtotime("$year-$month-$days"));
+    if ($lastWeekday < 6) { for($i=$lastWeekday+1;$i<=6;$i++){$html .= '<td></td>';}}
+    $html .= '</tr></tbody></table>';
+    return $html;
+}
+$year = date('Y');
+$month = date('n');
+?>
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rezervacije | ProšećiMe</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<?php include __DIR__ . '/elementi/nav.php'; ?>
+<main class="container py-5">
+  <h1 class="fw-bold text-center mb-4">Rezervacije</h1>
+<?php if(!$dog): ?>
+  <form method="post" class="mb-4">
+    <div class="mb-3">
+      <label class="form-label">Koliko želite da traje šetnja?</label>
+      <select name="duration" class="form-select">
+        <option value="30">30 min</option>
+        <option value="60">1 sat</option>
+        <option value="90">1.5 sata</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Gdje planirate ići?</label>
+      <select name="location" class="form-select">
+        <option value="park">Park</option>
+        <option value="suma">Šuma</option>
+        <option value="grad">Grad</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Željena energija psa</label>
+      <select name="energy" class="form-select">
+        <option value="miran">Mirniji pas</option>
+        <option value="energetic">Energican pas</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Pronađi psa</button>
+  </form>
+<?php else: ?>
+  <h2 class="mb-3">Preporučeni pas: <?=htmlspecialchars($dog['name'])?></h2>
+  <p><strong>Pasmina:</strong> <?=htmlspecialchars($dog['breed'])?>,<br>
+     <strong>Temperament:</strong> <?=htmlspecialchars($dog['temperament'])?></p>
+  <img src="img/<?=htmlspecialchars($dog['image'])?>" class="img-fluid mb-4" style="max-width:300px" alt="<?=htmlspecialchars($dog['name'])?>">
+  <?php if ($feedback): ?>
+    <div class="alert alert-info"><?=htmlspecialchars($feedback)?></div>
+  <?php endif; ?>
+  <form method="post" id="resForm">
+    <input type="hidden" name="dog_id" value="<?=$dog['id']?>">
+    <?= renderCalendar($year,$month,$reserved) ?>
+  </form>
+  <?php if (empty($_SESSION['user_id'])): ?>
+    <p class="text-warning mt-3">Za rezervaciju se <a href="prijava.php">prijavite</a>.</p>
+  <?php endif; ?>
+<?php endif; ?>
+</main>
+<?php include __DIR__ . '/elementi/footer.php'; ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -61,7 +61,7 @@ session_start();
 
   <!-- CTA -->
   <section id="rezervacija" class="py-5 text-center">
-    <div class="container"><h2 class="fw-bold mb-4">Spreman/na pokloniti šetnju?</h2><p class="lead mb-4">Rezerviraj termin ili podrži nas donacijom – svaki korak znači veseli repić više.</p><div class="d-flex justify-content-center gap-3 flex-wrap"><a href="rezervacija.php" class="btn btn-primary btn-lg">Rezerviraj šetnju</a><a href="donacije.php" class="btn btn-outline-secondary btn-lg">Doniraj</a></div></div>
+      <div class="container"><h2 class="fw-bold mb-4">Spreman/na pokloniti šetnju?</h2><p class="lead mb-4">Rezerviraj termin ili podrži nas donacijom – svaki korak znači veseli repić više.</p><div class="d-flex justify-content-center gap-3 flex-wrap"><a href="rezervacije.php" class="btn btn-primary btn-lg">Rezerviraj šetnju</a><a href="donacije.php" class="btn btn-outline-secondary btn-lg">Doniraj</a></div></div>
   </section>
 
   <!-- FOOTER -->

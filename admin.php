@@ -17,11 +17,14 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     } elseif(isset($_POST['delete_res'])){
         $stmt = $pdo->prepare('DELETE FROM reservations WHERE id=?');
         $stmt->execute([(int)$_POST['delete_res']]);
+    } elseif(isset($_POST['complete_res'])){
+        $stmt = $pdo->prepare('UPDATE reservations SET completed=1 WHERE id=?');
+        $stmt->execute([(int)$_POST['complete_res']]);
     }
 }
 $dogs = $pdo->query('SELECT * FROM dogs')->fetchAll();
 $users = $pdo->query("SELECT id, username FROM users WHERE role='user'")->fetchAll();
-$reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.time_slot,r.duration,r.location FROM reservations r JOIN dogs d ON r.dog_id=d.id LEFT JOIN users u ON r.reserved_by_user=u.id ORDER BY r.reserved_for DESC')->fetchAll();
+$reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.time_slot,r.duration,r.location,r.completed FROM reservations r JOIN dogs d ON r.dog_id=d.id LEFT JOIN users u ON r.reserved_by_user=u.id ORDER BY r.reserved_for DESC')->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="hr">
@@ -81,7 +84,7 @@ $reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.time
 <?php else: ?>
   <h2>Rezervacije</h2>
   <table class="table table-bordered">
-  <thead><tr><th>ID</th><th>Pas</th><th>Korisnik</th><th>Datum</th><th>Termin</th><th>Trajanje</th><th>Lokacija</th><th></th></tr></thead>
+  <thead><tr><th>ID</th><th>Pas</th><th>Korisnik</th><th>Datum</th><th>Termin</th><th>Trajanje</th><th>Lokacija</th><th>Status</th><th></th></tr></thead>
   <tbody>
   <?php foreach($reservations as $r): ?>
     <tr>
@@ -92,8 +95,12 @@ $reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.time
       <td><?= $r['time_slot']==='morning'?'Jutro':'Večer' ?></td>
       <td><?= (int)$r['duration'] ?> min</td>
       <td><?= htmlspecialchars($r['location']) ?></td>
+      <td><?= $r['completed']? 'Odrađeno':'Čeka' ?></td>
       <td>
         <form method="post" class="d-inline">
+          <?php if(!$r['completed']): ?>
+          <button name="complete_res" value="<?= $r['id'] ?>" class="btn btn-sm btn-success">Označi odrađeno</button>
+          <?php endif; ?>
           <button name="delete_res" value="<?= $r['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Brisanje?')">Obriši</button>
         </form>
       </td>

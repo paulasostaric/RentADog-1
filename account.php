@@ -38,13 +38,16 @@ if($_SERVER['REQUEST_METHOD']==='POST' && $tab==='profile'){
     }
 }
 // fetch reservations
-$all=$pdo->prepare('SELECT r.id,d.name,r.reserved_for,r.time_slot,r.duration,r.location FROM reservations r JOIN dogs d ON r.dog_id=d.id WHERE r.reserved_by_user=? ORDER BY r.reserved_for DESC');
+$all=$pdo->prepare('SELECT r.id,d.name,r.reserved_for,r.time_slot,r.duration,r.location,r.completed FROM reservations r JOIN dogs d ON r.dog_id=d.id WHERE r.reserved_by_user=? ORDER BY r.reserved_for DESC');
 $all->execute([$user_id]);
 $resAll=$all->fetchAll();
-$today=date('Y-m-d');
+$revStmt=$pdo->prepare('SELECT reservation_id FROM reviews WHERE user_id=?');
+$revStmt->execute([$user_id]);
+$reviewed=[];
+foreach($revStmt->fetchAll() as $rv){$reviewed[$rv['reservation_id']]=true;}
 $my=[];$history=[];
 foreach($resAll as $r){
-    if($r['reserved_for'] >= $today){$my[]=$r;}else{$history[]=$r;}
+    if($r['completed']){$history[]=$r;}else{$my[]=$r;}
 }
 ?>
 <!DOCTYPE html>
@@ -88,14 +91,14 @@ foreach($resAll as $r){
 <?php else: ?>
   <?php if($history): ?>
   <table class="table table-bordered">
-    <thead><tr><th>Pas</th><th>Datum</th><th>Termin</th><th>Trajanje</th><th>Lokacija</th></tr></thead>
+    <thead><tr><th>Pas</th><th>Datum</th><th>Termin</th><th>Trajanje</th><th>Lokacija</th><th>Recenzija</th></tr></thead>
     <tbody>
     <?php foreach($history as $r): ?>
-      <tr><td><?= htmlspecialchars($r['name']) ?></td><td><?= htmlspecialchars($r['reserved_for']) ?></td><td><?= $r['time_slot']==='morning'?'Jutro':'Večer' ?></td><td><?= (int)$r['duration'] ?> min</td><td><?= htmlspecialchars($r['location']) ?></td></tr>
+      <tr><td><?= htmlspecialchars($r['name']) ?></td><td><?= htmlspecialchars($r['reserved_for']) ?></td><td><?= $r['time_slot']==='morning'?'Jutro':'Večer' ?></td><td><?= (int)$r['duration'] ?> min</td><td><?= htmlspecialchars($r['location']) ?></td><td><?php if(isset($reviewed[$r['id']])): ?>Hvala!<?php else: ?><a href="review.php?id=<?= $r['id'] ?>">Ostavi recenziju</a><?php endif; ?></td></tr>
     <?php endforeach; ?>
     </tbody>
   </table>
-  <p class="text-muted">Ostavite recenziju na društvenim mrežama!</p>
+  <p class="text-muted">Hvala što ste prošetali psa!</p>
   <?php else: ?><p>Nema povijesti šetnji.</p><?php endif; ?>
 <?php endif; ?>
 </div>

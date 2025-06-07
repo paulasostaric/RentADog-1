@@ -24,6 +24,7 @@ session_start();
     <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">2</div><h5 class="fw-semibold mb-2">Upoznaj psa</h5><p>Na licu mjesta ti pomažemo odabrati pravog prijatelja.</p></div></div>
     <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">3</div><h5 class="fw-semibold mb-2">Pokloni šetnju</h5><p>Šetnja, igra i povratak veselog psa.</p></div></div>
   </div>
+  <p class="lead text-center mb-5">Nakon što rezervirate termin i dođete u Dumovec, naši volonteri će vam pokazati osnovne upute o psu kojeg vodite. Šetnja obično traje sat vremena, a po povratku psa možete nagraditi poslasticom i dogovoriti novi dolazak.</p>
 
   <h2 class="text-center fw-bold mb-4">Česta pitanja</h2>
   <div class="accordion" id="faqAcc">

@@ -78,6 +78,7 @@ CREATE TABLE `reservations` (
   `duration` int(10) UNSIGNED NOT NULL DEFAULT 60,
   `location` varchar(50) NOT NULL,
   `reserved_by_user` int(10) UNSIGNED DEFAULT NULL,
+  `completed` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -85,9 +86,24 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`id`, `dog_id`, `reserved_for`, `time_slot`, `duration`, `location`, `reserved_by_user`, `created_at`) VALUES
-(5, 2, '2025-06-10', 'morning', 60, 'park', 2, '2025-06-07 13:24:13'),
-(6, 20, '2025-06-17', 'evening', 60, 'Šuma', 1, '2025-06-07 15:28:39');
+INSERT INTO `reservations` (`id`, `dog_id`, `reserved_for`, `time_slot`, `duration`, `location`, `reserved_by_user`, `completed`, `created_at`) VALUES
+(5, 2, '2025-06-10', 'morning', 60, 'park', 2, 0, '2025-06-07 13:24:13'),
+(6, 20, '2025-06-17', 'evening', 60, 'Šuma', 1, 0, '2025-06-07 15:28:39');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `reservation_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- --------------------------------------------------------
 
@@ -132,6 +148,12 @@ ALTER TABLE `reservations`
   ADD KEY `dog_id` (`dog_id`),
   ADD KEY `reserved_by_user` (`reserved_by_user`);
 
+-- Indexes for table `reviews`
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reservation_id` (`reservation_id`),
+  ADD KEY `user_id` (`user_id`);
+
 --
 -- Indexes for table `users`
 --
@@ -155,6 +177,10 @@ ALTER TABLE `dogs`
 ALTER TABLE `reservations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
+-- AUTO_INCREMENT for table `reviews`
+ALTER TABLE `reviews`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
@@ -171,6 +197,10 @@ ALTER TABLE `users`
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`dog_id`) REFERENCES `dogs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`reserved_by_user`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `reviews`
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `reservations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

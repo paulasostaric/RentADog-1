@@ -15,6 +15,9 @@ if (!$dog) {
     exit;
 }
 
+$durations = array_filter(array_map('trim', explode(',', $dog['durations'])));
+$locations = array_filter(array_map('trim', explode(',', $dog['locations'])));
+
 $additional = [];
 $base = pathinfo($dog['image'], PATHINFO_FILENAME);
 for ($i = 1; $i <= 3; $i++) {
@@ -41,8 +44,24 @@ for ($i = 1; $i <= 3; $i++) {
       <p><strong>Pasmina:</strong> <?=htmlspecialchars($dog['breed'])?><br>
          <strong>Rođendan:</strong> <?=date('j.n.Y',strtotime($dog['dob']))?><br>
          <strong>Temperament:</strong> <?=htmlspecialchars($dog['temperament'])?></p>
-      <form method="post" action="rezervacije.php">
+      <form method="post" action="rezervacije.php" class="mb-3">
         <input type="hidden" name="dog_id" value="<?=$dog['id']?>">
+        <div class="mb-2">
+          <label class="form-label">Trajanje šetnje</label>
+          <select name="duration" class="form-select">
+            <?php foreach($durations as $d): ?>
+              <option value="<?=$d?>"><?=$d==30? '30 min' : ($d/60).' sat'.($d>60?'a':'')?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Lokacija</label>
+          <select name="location" class="form-select">
+            <?php foreach($locations as $loc): ?>
+              <option value="<?=htmlspecialchars($loc)?>"><?=ucfirst($loc)?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
         <button class="btn btn-primary">Rezerviraj šetnju</button>
       </form>
     </div>

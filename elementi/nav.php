@@ -19,7 +19,7 @@ $user    = $_SESSION['username'] ?? null;
             'index.php'       => 'Početna',
             'psi.php'         => 'Naši psi',
             'kako.php'        => 'Kako funkcionira?',
-            'rezervacija.php' => 'Rezervacija',
+            'rezervacije.php' => 'Rezervacije',
             'onama.php'       => 'O nama'
           ];
           foreach ($links as $file => $title) {

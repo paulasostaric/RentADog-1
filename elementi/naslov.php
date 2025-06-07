@@ -6,7 +6,7 @@
   <div class="container d-flex flex-column justify-content-center align-items-center h-100 position-relative">
     <h1 class="display-4 fw-bold mb-3">Pokloni sklonišnom psu dan za pamćenje</h1>
     <p class="lead mb-4">Dođi u naše sklonište, povedi psa u šetnju i ispuni mu srce radošću.</p>
-    <a href="rezervacija.php" class="btn btn-primary btn-lg">Rezerviraj sada</a>
+    <a href="rezervacije.php" class="btn btn-primary btn-lg">Rezerviraj sada</a>
   </div>
 </section>
 

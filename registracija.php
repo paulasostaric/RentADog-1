@@ -1,44 +1,7 @@
 <?php
-session_start();
-require_once __DIR__ . '/config/config.php';
-
-$errors = [];
-if ($_SERVER['REQUEST_METHOD']==='POST') {
-  $u = trim($_POST['username'] ?? '');
-  $p = $_POST['password'] ?? '';
-  $p2= $_POST['password2'] ?? '';
-
-  if (strlen($u)<3) $errors[] = 'Korisničko ime mora imati barem 3 znaka.';
-  if (strlen($p)<6) $errors[] = 'Lozinka mora imati barem 6 znakova.';
-  if ($p !== $p2) $errors[] = 'Lozinke se ne podudaraju.';
-
-  if (!$errors) {
-    // provjeri da username ne postoji
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
-    $stmt->execute([$u]);
-    if ($stmt->fetch()) {
-      $errors[] = 'Korisničko ime je zauzeto.';
-    } else {
-      $hash = password_hash($p, PASSWORD_DEFAULT);
-      $ins  = $pdo->prepare("INSERT INTO users (username,password_hash) VALUES (?,?)");
-      $ins->execute([$u, $hash]);
-      $_SESSION['user_id']   = $pdo->lastInsertId();
-      $_SESSION['username']  = $u;
-      $_SESSION['is_admin']  = 0;
-      header('Location: index.php');
-      exit;
-    }
-  }
-}
-?>
-
-
-
-
-
-<?php
 // registracija.php
 
+session_start();
 require_once __DIR__ . '/config/config.php';
 
 $errors   = [];
@@ -81,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['username'] = $username;
         $_SESSION['user_id']  = $pdo->lastInsertId();
         $_SESSION['role']     = 'user';
+        $_SESSION['is_admin'] = 0;
 
         header('Location: index.php');
         exit;

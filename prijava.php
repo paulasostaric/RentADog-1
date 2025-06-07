@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id']   = $user['id'];
             $_SESSION['username']  = $username;
             $_SESSION['is_admin']  = (bool)$user['is_admin'];
+            $_SESSION['role']      = $user['is_admin'] ? 'admin' : 'user';
 
             header('Location: index.php');
             exit;
@@ -48,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-echo password_hash('admin123', PASSWORD_DEFAULT);
 
 ?>
 <!DOCTYPE html>

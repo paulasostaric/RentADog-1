@@ -12,8 +12,8 @@ if(!isset($_GET['id'])){
 $user_id = (int)$_GET['id'];
 $stmt = $pdo->prepare('SELECT id, username FROM users WHERE id=?');
 $stmt->execute([$user_id]);
-$user = $stmt->fetch();
-if(!$user){
+$account = $stmt->fetch();
+if(!$account){
     echo 'Korisnik nije pronađen.';
     exit;
 }
@@ -26,13 +26,13 @@ $reservations = $res->fetchAll();
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Račun - <?= htmlspecialchars($user['username']) ?></title>
+<title>Račun - <?= htmlspecialchars($account['username']) ?></title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <?php include __DIR__.'/elementi/nav.php'; ?>
 <div class="container py-5">
-<h1 class="mb-4">Račun korisnika <?= htmlspecialchars($user['username']) ?></h1>
+<h1 class="mb-4">Račun korisnika <?= htmlspecialchars($account['username']) ?></h1>
 <?php if($reservations): ?>
 <table class="table table-bordered">
 <thead><tr><th>ID</th><th>Pas</th><th>Datum</th><th>Trajanje</th><th>Lokacija</th></tr></thead>

@@ -48,13 +48,14 @@ $reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.time
   <h2>Upravljanje psima</h2>
   <p><a href="dog_form.php" class="btn btn-sm btn-success">Dodaj psa</a></p>
   <table class="table table-bordered">
-  <thead><tr><th>ID</th><th>Ime</th><th>Pasmina</th><th>Akcije</th></tr></thead>
+  <thead><tr><th>ID</th><th>Ime</th><th>Pasmina</th><th>Veličina</th><th>Akcije</th></tr></thead>
   <tbody>
   <?php foreach($dogs as $d): ?>
     <tr>
       <td><?= $d['id'] ?></td>
       <td><?= htmlspecialchars($d['name']) ?></td>
       <td><?= htmlspecialchars($d['breed']) ?></td>
+      <td><?= htmlspecialchars($d['size']) ?></td>
       <td>
         <a href="dog_form.php?id=<?= $d['id'] ?>" class="btn btn-sm btn-secondary">Uredi</a>
         <form method="post" class="d-inline">

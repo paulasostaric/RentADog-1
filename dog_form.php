@@ -6,7 +6,7 @@ if(($_SESSION['role'] ?? '') !== 'admin'){
     exit;
 }
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$dog = ['name'=>'','breed'=>'','dob'=>'','temperament'=>'','image'=>'','durations'=>'60','locations'=>'park'];
+$dog = ['name'=>'','breed'=>'','dob'=>'','temperament'=>'','size'=>'srednji','image'=>'','durations'=>'60','locations'=>'park'];
 if($id){
     $stmt = $pdo->prepare('SELECT * FROM dogs WHERE id=?');
     $stmt->execute([$id]);
@@ -22,16 +22,17 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         $_POST['breed'] ?? '',
         $_POST['dob'] ?? '',
         $_POST['temperament'] ?? '',
+        $_POST['size'] ?? 'srednji',
         $_POST['image'] ?? '',
         $_POST['durations'] ?? '60',
         $_POST['locations'] ?? 'park'
     ];
     if($id){
-        $stmt = $pdo->prepare('UPDATE dogs SET name=?,breed=?,dob=?,temperament=?,image=?,durations=?,locations=? WHERE id=?');
+        $stmt = $pdo->prepare('UPDATE dogs SET name=?,breed=?,dob=?,temperament=?,size=?,image=?,durations=?,locations=? WHERE id=?');
         $data[] = $id;
         $stmt->execute($data);
     }else{
-        $stmt = $pdo->prepare('INSERT INTO dogs(name,breed,dob,temperament,image,durations,locations) VALUES(?,?,?,?,?,?,?)');
+        $stmt = $pdo->prepare('INSERT INTO dogs(name,breed,dob,temperament,size,image,durations,locations) VALUES(?,?,?,?,?,?,?,?)');
         $stmt->execute($data);
     }
     header('Location: admin.php?tab=dogs');
@@ -56,6 +57,15 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   <div class="mb-3"><label class="form-label">Pasmina</label><input type="text" name="breed" class="form-control" value="<?= htmlspecialchars($dog['breed']) ?>" required></div>
   <div class="mb-3"><label class="form-label">Datum rođenja</label><input type="date" name="dob" class="form-control" value="<?= htmlspecialchars($dog['dob']) ?>" required></div>
   <div class="mb-3"><label class="form-label">Temperament</label><input type="text" name="temperament" class="form-control" value="<?= htmlspecialchars($dog['temperament']) ?>" required></div>
+  <div class="mb-3">
+    <label class="form-label">Veličina</label>
+    <select name="size" class="form-select">
+      <?php $sizes=['mali'=>'Mali','srednji'=>'Srednji','veliki'=>'Veliki']; ?>
+      <?php foreach($sizes as $val=>$label): ?>
+        <option value="<?= $val ?>" <?= $dog['size']===$val?'selected':'' ?>><?= $label ?></option>
+      <?php endforeach; ?>
+    </select>
+  </div>
   <div class="mb-3"><label class="form-label">Slika (naziv datoteke)</label><input type="text" name="image" class="form-control" value="<?= htmlspecialchars($dog['image']) ?>" required></div>
   <div class="mb-3"><label class="form-label">Trajanja (npr. 60,90)</label><input type="text" name="durations" class="form-control" value="<?= htmlspecialchars($dog['durations']) ?>" required></div>
   <div class="mb-3"><label class="form-label">Lokacije (npr. park,suma)</label><input type="text" name="locations" class="form-control" value="<?= htmlspecialchars($dog['locations']) ?>" required></div>

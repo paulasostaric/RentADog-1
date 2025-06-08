@@ -39,7 +39,11 @@ session_start();
     <div class="col-md-6">
       <h4 class="fw-semibold">Lokacija</h4>
       <div style="height:300px">
+<<<<<<< Updated upstream
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22251.593520160128!2d16.138470522884447!3d45.80226165961627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47667a395fe0ca51%3A0x18858fa2e5340809!2s10361%2C%20Dumovec!5e0!3m2!1shr!2shr!4v1749386394937!5m2!1shr!2shr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+=======
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22251.593520160128!2d16.138470522884447!3d45.80226165961627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47667a395fe0ca51%3A0x18858fa2e5340809!2s10361%2C%20Dumovec!5e0!3m2!1shr!2shr!4v1749379553655!5m2!1shr!2shr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+>>>>>>> Stashed changes
       </div>
     </div>
   </div>

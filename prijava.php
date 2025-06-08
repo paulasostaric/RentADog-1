@@ -62,8 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="icon" href="img/paw.svg" type="image/svg+xml">
 
-  <!-- Eventualni custom CSS -->
-  <link rel="stylesheet" href="css/prijava.css">
+  <!-- Nema posebnog vanjskog stila -->
 </head>
 <body>
 

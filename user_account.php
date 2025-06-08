@@ -1,4 +1,7 @@
 <?php
+// user_account.php
+// Pregled profila korisnika dostupan samo administratoru
+
 session_start();
 require_once __DIR__.'/config/config.php';
 if(($_SESSION['role'] ?? '') !== 'admin'){
@@ -19,7 +22,7 @@ if(!$account){
 }
 $res = $pdo->prepare('SELECT r.id,d.name,r.reserved_for,r.time_slot,r.duration,r.location FROM reservations r JOIN dogs d ON r.dog_id=d.id WHERE r.reserved_by_user=? ORDER BY r.reserved_for DESC');
 $res->execute([$user_id]);
-$reservations = $res->fetchAll();
+$reservations = $res->fetchAll(); // sve rezervacije odabranog korisnika
 ?>
 <!DOCTYPE html>
 <html lang="hr">

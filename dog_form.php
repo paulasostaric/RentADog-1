@@ -1,4 +1,7 @@
 <?php
+// dog_form.php
+// Obrazac za dodavanje ili uređivanje podataka o psu (samo za admina)
+
 session_start();
 require_once __DIR__.'/config/config.php';
 if(($_SESSION['role'] ?? '') !== 'admin'){
@@ -16,6 +19,7 @@ if($id){
         exit;
     }
 }
+// Slanje forme
 if($_SERVER['REQUEST_METHOD']==='POST'){
     $data = [
         $_POST['name'] ?? '',

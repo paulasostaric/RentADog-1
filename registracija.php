@@ -1,4 +1,6 @@
 <?php
+// registracija.php
+// Obrada registracije novog korisnika
 
 session_start();
 require_once __DIR__ . '/config/config.php';
@@ -14,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password  = $_POST['password']  ?? '';
     $password2 = $_POST['password2'] ?? '';
 
-    // 1) Osnovna validacija
+    // 1) Osnovna validacija unesenih podataka
     if (empty($username) || strlen($username) < 3) {
         $errors[] = "Korisničko ime mora imati barem 3 znaka.";
     }
@@ -25,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Lozinke se ne podudaraju.";
     }
 
-    // 2) Provjeri postoji li već korisnik s tim imenom
+    // 2) Provjeri postoji li već korisnik s tim imenom u bazi
     if (empty($errors)) {
         $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
         $stmt->execute([$username]);

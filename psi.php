@@ -1,4 +1,6 @@
 <?php
+// psi.php
+// Prikazuje sve pse uz mogućnost filtriranja po veličini, starosti i temperamentu
 session_start();
 require_once __DIR__ . '/config/config.php';
 
@@ -6,33 +8,38 @@ $size = $_GET['size'] ?? '';
 $age  = $_GET['age']  ?? '';
 $temp = $_GET['temp'] ?? '';
 
-$sql = 'SELECT * FROM dogs WHERE 1';
-$params = [];
+$sql = 'SELECT * FROM dogs WHERE 1';  // osnovni upit
+$params = [];                          // parametri za filtriranje
+// Filtriranje po veličini psa
 if ($size) {
     $sql .= ' AND size = ?';
     $params[] = $size;
 }
+// Filtriranje po temperamentu
 if ($temp) {
     $sql .= ' AND LOWER(temperament) LIKE ?';
     $params[] = $temp === 'mirna' ? 'mirn%' : 'energic%';
 }
+// Filtriranje po starosti
 switch ($age) {
-    case 'stenci':
+    case 'stenci': // mlađi od godine dana
         $sql .= ' AND TIMESTAMPDIFF(MONTH, dob, CURDATE()) < 12';
         break;
-    case 'mlad':
+    case 'mlad': // 1-3 godine
         $sql .= ' AND TIMESTAMPDIFF(YEAR, dob, CURDATE()) >= 1 AND TIMESTAMPDIFF(YEAR, dob, CURDATE()) < 3';
         break;
-    case 'odrasli':
+    case 'odrasli': // 3-7 godina
         $sql .= ' AND TIMESTAMPDIFF(YEAR, dob, CURDATE()) >= 3 AND TIMESTAMPDIFF(YEAR, dob, CURDATE()) < 7';
         break;
-    case 'stariji':
+    case 'stariji': // 7+ godina
         $sql .= ' AND TIMESTAMPDIFF(YEAR, dob, CURDATE()) >= 7';
         break;
 }
+
+// Izvršavanje pripremljenog SQL upita
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
-$dogs = $stmt->fetchAll();
+$dogs = $stmt->fetchAll(); // svi filtrirani psi
 ?>
 <!DOCTYPE html>
 <html lang="hr">

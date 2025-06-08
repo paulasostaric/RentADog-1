@@ -1,4 +1,7 @@
 <?php
+// account.php
+// Korisnički panel za pregled i uređivanje podataka te rezervacija
+
 session_start();
 require_once __DIR__.'/config/config.php';
 if(!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '')!=='user'){
@@ -37,10 +40,12 @@ if($_SERVER['REQUEST_METHOD']==='POST' && $tab==='profile'){
         $u['username']=$username; $u['email']=$email; $u['phone']=$phone;
     }
 }
-// fetch reservations
+// Dohvat svih rezervacija korisnika
 $all=$pdo->prepare('SELECT r.id,d.name,r.reserved_for,r.time_slot,r.duration,r.location,r.completed FROM reservations r JOIN dogs d ON r.dog_id=d.id WHERE r.reserved_by_user=? ORDER BY r.reserved_for DESC');
 $all->execute([$user_id]);
 $resAll=$all->fetchAll();
+
+// Pregled rezervacija koje su već recenzirane
 $revStmt=$pdo->prepare('SELECT reservation_id FROM reviews WHERE user_id=?');
 $revStmt->execute([$user_id]);
 $reviewed=[];

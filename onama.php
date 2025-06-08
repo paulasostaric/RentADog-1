@@ -10,7 +10,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
- <?php include('elementi/nav.php')?>
+ <?php // Uključujemo zajednički navigacijski izbornik
+ include('elementi/nav.php')?>
 
 
 <main class="container py-5 about-us">
@@ -35,7 +36,8 @@
   </div>
 </main>
 
- <?php include('elementi/footer.php')?>
+ <?php // Zajednički footer sa skriptom
+ include('elementi/footer.php')?>
 
 <script>const u=localStorage.getItem('username');if(u){document.getElementById('loginBtn').textContent=u;}</script>
 </body>

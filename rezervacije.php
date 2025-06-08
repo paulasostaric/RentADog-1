@@ -1,4 +1,7 @@
 <?php
+// rezervacije.php
+// Kompleksnija stranica za odabir psa i rezervaciju termina
+
 session_start();
 require_once __DIR__ . '/config/config.php';
 
@@ -10,12 +13,14 @@ $duration = 60;
 $location = '';
 $feedback = '';
 
+// Provjerava odgovara li pas traženom trajanju i lokaciji
 function dog_matches($dog,$duration,$location){
     $durs=array_map('intval',array_map('trim',explode(',',$dog['durations'])));
     $locs=array_map('mb_strtolower',array_map('trim',explode(',',$dog['locations'])));
     return in_array((int)$duration,$durs,true) && in_array(mb_strtolower($location),$locs,true);
 }
 
+// Dohvaća psa i njegove postojeće rezervacije
 function load_dog_and_reservations($dog_id, &$reservations, &$reserved, $pdo) {
     $stmt = $pdo->prepare("SELECT * FROM dogs WHERE id=?");
     $stmt->execute([$dog_id]);
@@ -32,7 +37,8 @@ function load_dog_and_reservations($dog_id, &$reservations, &$reserved, $pdo) {
 }
 
 if ($_SERVER['REQUEST_METHOD']==='POST') {
-    if(isset($_POST['energy'])) { // from questionnaire
+// Upitnik za pronalazak psa prema energiji
+    if(isset($_POST['energy'])) {
         $energy = $_POST['energy'];
         $duration = (int)($_POST['duration'] ?? 60);
         $location = $_POST['location'] ?? '';
@@ -50,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                 $available_dogs = $dogs;
             }
         }
+    // Rezervacija konkretnog termina
     } elseif(isset($_POST['reserve_slot'], $_POST['dog_id'])) {
         $dog_id = (int)$_POST['dog_id'];
         $duration = (int)($_POST['duration'] ?? 60);
@@ -69,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             $dog = null;
             $feedback = 'Odabrano trajanje ili lokacija nisu dostupni za ovog psa.';
         }
+    // Odabir psa bez rezervacije termina
     } elseif(isset($_POST['dog_id'])) {
         $dog_id = (int)$_POST['dog_id'];
         $duration = (int)($_POST['duration'] ?? $duration);
@@ -121,7 +129,8 @@ $month = date('n');
   </style>
 </head>
 <body>
-<?php include __DIR__ . '/elementi/nav.php'; ?>
+<?php // Navigacija
+include __DIR__ . '/elementi/nav.php'; ?>
 <main class="container py-5">
   <h1 class="fw-bold text-center mb-4">Rezervacije</h1>
 <?php if(!$dog && empty($available_dogs)): ?>
@@ -191,7 +200,8 @@ $month = date('n');
   <?php endif; ?>
 <?php endif; ?>
 </main>
-<?php include __DIR__ . '/elementi/footer.php'; ?>
+<?php // Footer stranice
+include __DIR__ . '/elementi/footer.php'; ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 document.querySelectorAll('#calendarTable td[data-date]').forEach(td=>{

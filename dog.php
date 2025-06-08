@@ -1,4 +1,7 @@
 <?php
+// dog.php
+// Prikaz detalja pojedinog psa i forma za rezervaciju šetnje
+
 session_start();
 require_once __DIR__ . '/config/config.php';
 
@@ -15,11 +18,12 @@ if (!$dog) {
     exit;
 }
 
-$durations = array_filter(array_map('trim', explode(',', $dog['durations'])));
-$locations = array_filter(array_map('trim', explode(',', $dog['locations'])));
+$durations = array_filter(array_map('trim', explode(',', $dog['durations']))); // moguća trajanja
+$locations = array_filter(array_map('trim', explode(',', $dog['locations'])));   // dostupne lokacije
 
 $additional = [];
 $base = pathinfo($dog['image'], PATHINFO_FILENAME);
+// Provjera postoje li dodatne slike uz glavnu
 for ($i = 1; $i <= 3; $i++) {
     $candidate = "img/{$base}_$i.jpeg";
     if (file_exists(__DIR__ . "/$candidate")) {

@@ -1,6 +1,7 @@
 <?php
+// index.php
+// Početna stranica aplikacije – ovdje samo pokrećemo sesiju i učitavamo dijelove stranice
 session_start();
-
 ?>
 <!DOCTYPE html>
 <html lang="hr">

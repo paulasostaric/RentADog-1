@@ -1,7 +1,11 @@
 <?php
 // logout.php
-session_start();
-session_unset();
-session_destroy();
+// Odjavljuje korisnika brisanjem svih podataka iz sesije
+
+session_start();            // pokrećemo sesiju ako već nije pokrenuta
+session_unset();            // brišemo sve varijable spremljene u sesiji
+session_destroy();          // potpuno uništavamo sesiju
+
+// Nakon odjave vraćamo korisnika na početnu stranicu
 header('Location: index.php');
 exit;

@@ -1,9 +1,15 @@
 <?php
 // elementi/nav.php
+// Generira navigacijski izbornik i prikazuje korisničko ime ako je prijavljen
+
+// Ako sesija još nije pokrenuta, pokrećemo je
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$current = basename($_SERVER['PHP_SELF']); 
+
+// Trenutna PHP datoteka kako bismo označili aktivnu stavku izbornika
+$current = basename($_SERVER['PHP_SELF']);
+// Korisnik iz sesije (ako je prijavljen)
 $user    = $_SESSION['username'] ?? null;
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
@@ -18,6 +24,7 @@ $user    = $_SESSION['username'] ?? null;
     <div class="collapse navbar-collapse" id="mainNav">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <?php
+          // Popis osnovnih linkova u navigaciji
           $links = [
             'index.php'       => 'Početna',
             'psi.php'         => 'Naši psi',
@@ -26,6 +33,7 @@ $user    = $_SESSION['username'] ?? null;
             'onama.php'       => 'O nama',
             'kontakt.php'     => 'Kontakt'
           ];
+          // Generiramo <li> elemente i označavamo onaj čija je datoteka trenutno aktivna
           foreach ($links as $file => $title) {
             $active = ($current === $file) ? 'active' : '';
             echo "<li class='nav-item'><a class='nav-link $active' href='$file'>$title</a></li>";
@@ -33,7 +41,7 @@ $user    = $_SESSION['username'] ?? null;
         ?>
 
         <?php if ($user): ?>
-          <!-- Ako je prijavljen, prikazujemo korisničko ime i povezujemo ga na logout.php -->
+          <!-- Ako je korisnik prijavljen prikazujemo izbornik s odjavom i poveznicama -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <?= htmlspecialchars($user) ?>

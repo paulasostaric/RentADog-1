@@ -1,4 +1,6 @@
 <?php
+// donacija.php
+// Informacije o podršci i upute za uplatu
 session_start();
 ?>
 <!DOCTYPE html>
@@ -12,7 +14,8 @@ session_start();
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<?php include('elementi/nav.php'); ?>
+<?php // Navigacija stranice
+include('elementi/nav.php'); ?>
 <main class="container py-5">
   <h1 class="fw-bold text-center mb-4">Podržite naš rad</h1>
   <p class="lead text-center mb-5">Svaka donacija pomaže Dumovcu u brizi za pse i organizaciji šetnji. Hvala što pomažete proširiti repiće sreće!</p>
@@ -30,6 +33,7 @@ session_start();
     <p class="mb-3">Radije bi nam poslali opremu ili hranu? Javite nam se putem <a href="kontakt.php">kontakta</a>.</p>
   </div>
 </main>
-<?php include('elementi/footer.php'); ?>
+<?php // Podnožje stranice
+include('elementi/footer.php'); ?>
 </body>
 </html>

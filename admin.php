@@ -1,12 +1,17 @@
 <?php
+// admin.php
+// Administratorski panel za upravljanje psima, korisnicima i rezervacijama
+
 session_start();
 require_once __DIR__ . '/config/config.php';
+// Pristup dozvoljen samo administratoru
 if (($_SESSION['role'] ?? '') !== 'admin') {
     header('Location: index.php');
     exit;
 }
 $tab = $_GET['tab'] ?? 'dogs';
 
+// Obrada akcija iz obrazaca (brisanje/označavanje)
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     if(isset($_POST['delete_dog'])){
         $stmt = $pdo->prepare('DELETE FROM dogs WHERE id=?');
@@ -22,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         $stmt->execute([(int)$_POST['complete_res']]);
     }
 }
+
+// Dohvat podataka za tablice
 $dogs = $pdo->query('SELECT * FROM dogs')->fetchAll();
 $users = $pdo->query("SELECT id, username FROM users WHERE role='user'")->fetchAll();
 $reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.time_slot,r.duration,r.location,r.completed FROM reservations r JOIN dogs d ON r.dog_id=d.id LEFT JOIN users u ON r.reserved_by_user=u.id ORDER BY r.reserved_for DESC')->fetchAll();

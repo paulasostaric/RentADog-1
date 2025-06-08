@@ -11,7 +11,8 @@
 </head>
 <body>
 
-<?php include('elementi/nav.php')?>
+<?php // Uključujemo navigaciju
+include('elementi/nav.php')?>
 
 <main class="container py-5">
   <h1 class="fw-bold text-center mb-4">Rezerviraj šetnju</h1>
@@ -34,7 +35,8 @@
   </div>
 </main>
 
-<?php include('elementi/footer.php')?>
+<?php // Zajednički footer
+include('elementi/footer.php')?>
 
 <script>
   const u=localStorage.getItem('username');if(u){document.getElementById('loginBtn').textContent=u;document.getElementById('bookingForm').classList.remove('d-none');}else{document.getElementById('authNotice').classList.remove('d-none');}

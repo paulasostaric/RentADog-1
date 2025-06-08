@@ -1,4 +1,6 @@
 <?php
+// kontakt.php
+// Stranica s informacijama i obrascem za slanje poruka
 session_start();
 ?>
 <!DOCTYPE html>

@@ -1,17 +1,24 @@
 <?php
+// review.php
+// Omogućuje korisniku ostavljanje recenzije nakon obavljene šetnje
+
 session_start();
 require_once __DIR__.'/config/config.php';
+
+// Samo prijavljeni korisnici mogu ostaviti recenziju
 if(!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '')!=='user'){
     header('Location: index.php');
     exit;
 }
 $user_id=$_SESSION['user_id'];
 $res_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+// ID rezervacije obavezno mora postojati
 if(!$res_id){
     echo 'Nepoznata rezervacija.';
     exit;
 }
-// Provjera rezervacije
+
+// Provjera da li je rezervacija korisnika odrađena
 $stmt=$pdo->prepare('SELECT completed FROM reservations WHERE id=? AND reserved_by_user=?');
 $stmt->execute([$res_id,$user_id]);
 $res=$stmt->fetch();
@@ -19,7 +26,7 @@ if(!$res || !$res['completed']){
     echo 'Rezervacija nije pronađena ili nije odrađena.';
     exit;
 }
-// Provjeri postoji li već recenzija
+// Provjeri postoji li već recenzija za tu rezervaciju
 $exists=$pdo->prepare('SELECT id FROM reviews WHERE reservation_id=? AND user_id=?');
 $exists->execute([$res_id,$user_id]);
 $rev=$exists->fetch();
@@ -42,7 +49,8 @@ if($_SERVER['REQUEST_METHOD']==='POST' && !$rev){
   <link rel="icon" href="img/paw.svg" type="image/svg+xml">
 </head>
 <body>
-<?php include __DIR__.'/elementi/nav.php'; ?>
+<?php // Navigacija
+include __DIR__.'/elementi/nav.php'; ?>
 <div class="container py-5">
 <h1 class="mb-4">Ostavite recenziju</h1>
 <?php if($rev): ?>

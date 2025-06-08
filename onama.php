@@ -22,7 +22,7 @@
       <p class="mb-0">Svaki novi šetač pomaže u socijalizaciji pasa i povećava im šanse za pronalaskom trajnog doma.</p>
     </div>
     <div class="col-md-6 text-md-end text-center">
-      <div class="ratio ratio-16x9" style="max-width:600px; margin-left:auto;">
+      <div class="ratio ratio-16x9 video-container">
        <iframe width="560" height="315" src="https://www.youtube.com/embed/qfSmo2DqJbU?si=_VMdPlna-PSz6GYp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
     </div>

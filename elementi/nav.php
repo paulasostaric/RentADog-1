@@ -8,7 +8,10 @@ $user    = $_SESSION['username'] ?? null;
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="index.php">ProšećiMe</a>
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="index.php">
+      <img src="img/paw.svg" alt="" width="24" class="me-1">
+      ProšećiMe
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -20,7 +23,8 @@ $user    = $_SESSION['username'] ?? null;
             'psi.php'         => 'Naši psi',
             'kako.php'        => 'Kako funkcionira?',
             'rezervacije.php' => 'Rezervacije',
-            'onama.php'       => 'O nama'
+            'onama.php'       => 'O nama',
+            'kontakt.php'     => 'Kontakt'
           ];
           foreach ($links as $file => $title) {
             $active = ($current === $file) ? 'active' : '';

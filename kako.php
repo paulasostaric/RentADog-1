@@ -1,6 +1,7 @@
 <?php
+// kako.php
+// Informativna stranica koja objašnjava proces najma psa
 session_start();
-
 ?>
 
 <!DOCTYPE html>

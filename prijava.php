@@ -1,8 +1,11 @@
 <?php
 // prijava.php
+// Skripta za prijavu korisnika
 
 session_start();
 require_once __DIR__ . '/config/config.php';
+
+// U razvojnoj okolini uključujemo prikaz grešaka
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -34,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$username]);
         $user = $stmt->fetch();
 
-        // Provjera lozinke
+        // Provjera lozinke i postavljanje sesijskih varijabli
         if ($user && password_verify($password, $user['password_hash'])) {
             // Spremi podatke u sesiju
             $_SESSION['user_id']   = $user['id'];

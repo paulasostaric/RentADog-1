@@ -20,7 +20,11 @@ session_start();
   <?php include('elementi/naslov.php')?>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   
+=======
+ 
+>>>>>>> Stashed changes
 =======
  
 >>>>>>> Stashed changes
@@ -44,7 +48,12 @@ session_start();
   </section>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   <!-- HOW -->
+=======
+
+   <!-- HOW -->
+>>>>>>> Stashed changes
 =======
 
    <!-- HOW -->

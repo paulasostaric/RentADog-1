@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         $location = $_POST['location'] ?? '';
         $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         if($dog && dog_matches($dog,$duration,$location)) {
             list($date,$slot) = explode('|', $_POST['reserve_slot']);
             if (!isset($reserved[$date][$slot]) && isset($_SESSION['user_id'])) {
@@ -63,12 +64,17 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                     ->execute([$dog_id,$date,$slot,$duration,$location,$_SESSION['user_id']]);
                 $feedback = "Rezervirano za $date ($slot).";
 =======
+=======
+>>>>>>> Stashed changes
         if($dog) {
             $date = $_POST['reserve_date'];
             if (!isset($reserved[$date]) && isset($_SESSION['user_id'])) {
                 $pdo->prepare("INSERT INTO reservations(dog_id,reserved_for,duration,location,reserved_by_user) VALUES(?,?,?,?,?)")
                     ->execute([$dog_id,$date,$duration,$location,$_SESSION['user_id']]);
                 $feedback = "Rezervirano za $date.";
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
             } else {
@@ -187,11 +193,14 @@ $month = date('n');
     <input type="hidden" name="location" value="<?=htmlspecialchars($location)?>">
     <?= renderCalendar($year,$month,$reserved) ?>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <div id="timeOptions" class="d-none mt-3">
       <p class="mb-2">Odabrani datum: <span id="selDate"></span></p>
       <button class="btn btn-outline-primary me-2" id="morningBtn" name="reserve_slot" value="" type="submit">Jutarnja (9:00)</button>
       <button class="btn btn-outline-primary" id="eveningBtn" name="reserve_slot" value="" type="submit">Večernja (18:00)</button>
     </div>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   </form>

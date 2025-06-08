@@ -20,17 +20,7 @@ session_start();
   <!-- HERO -->
   <?php include('elementi/naslov.php')?>
 
-  <!-- HOW -->
-  <section id="kako" class="py-5">
-    <div class="container">
-      <h2 class="text-center fw-bold mb-5">Kako funkcionira?</h2>
-      <div class="row g-4 text-center">
-        <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">1</div><h5 class="fw-semibold mb-2">Rezerviraj termin</h5><p>Odaberi dan i vrijeme online ili telefonom.</p></div></div>
-        <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">2</div><h5 class="fw-semibold mb-2">Upoznaj psa</h5><p>Pomažemo ti pronaći savršenog prijatelja.</p></div></div>
-        <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">3</div><h5 class="fw-semibold mb-2">Pokloni šetnju</h5><p>Prošeći, poigraj se i vrati veselog psa.</p></div></div>
-      </div>
-    </div>
-  </section>
+  
 
   <!-- FEATURED DOGS -->
   <section id="featured" class="py-5 bg-light">
@@ -47,6 +37,18 @@ session_start();
         <button class="carousel-control-next" type="button" data-bs-target="#dogsCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
       </div>
       <div class="text-center mt-4"><a href="psi.php" class="btn btn-outline-primary">Pogledaj sve pse</a></div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="kako" class="py-5">
+    <div class="container">
+      <h2 class="text-center fw-bold mb-5">Kako funkcionira?</h2>
+      <div class="row g-4 text-center">
+        <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">1</div><h5 class="fw-semibold mb-2">Rezerviraj termin</h5><p>Odaberi dan i vrijeme online ili telefonom.</p></div></div>
+        <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">2</div><h5 class="fw-semibold mb-2">Upoznaj psa</h5><p>Pomažemo ti pronaći savršenog prijatelja.</p></div></div>
+        <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">3</div><h5 class="fw-semibold mb-2">Pokloni šetnju</h5><p>Prošeći, poigraj se i vrati veselog psa.</p></div></div>
+      </div>
     </div>
   </section>
 

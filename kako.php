@@ -10,6 +10,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kako funkcionira | ProšećiMe</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" href="img/paw.svg" type="image/svg+xml">
   <link rel="stylesheet" href="kako.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -25,6 +26,14 @@ session_start();
     <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">3</div><h5 class="fw-semibold mb-2">Pokloni šetnju</h5><p>Šetnja, igra i povratak veselog psa.</p></div></div>
   </div>
   <p class="lead text-center mb-5">Nakon što rezervirate termin i dođete u Dumovec, naši volonteri će vam pokazati osnovne upute o psu kojeg vodite. Šetnja obično traje sat vremena, a po povratku psa možete nagraditi poslasticom i dogovoriti novi dolazak.</p>
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <p>Program šetnji nastao je kako bismo psima pružili više druženja i lakšu prilagodbu na gradske uvjete. Volonteri vam uvijek stoje na raspolaganju za savjete o ponašanju i skrbi o psima.</p>
+    </div>
+    <div class="col-md-6 text-center">
+      <img src="img/volonter1.jpg" class="img-fluid rounded-4" alt="Volonter sa psom">
+    </div>
+  </div>
 
   <h2 class="text-center fw-bold mb-4">Česta pitanja</h2>
   <div class="accordion" id="faqAcc">

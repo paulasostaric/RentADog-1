@@ -33,6 +33,7 @@ $reservations = $pdo->query('SELECT r.id,d.name,u.username,r.reserved_for,r.time
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin panel</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" href="img/paw.svg" type="image/svg+xml">
 </head>
 <body>
 <?php include __DIR__.'/elementi/nav.php'; ?>

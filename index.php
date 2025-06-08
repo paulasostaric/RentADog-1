@@ -19,15 +19,6 @@ session_start();
   <!-- HERO -->
   <?php include('elementi/naslov.php')?>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  
-=======
- 
->>>>>>> Stashed changes
-=======
- 
->>>>>>> Stashed changes
 
   <!-- FEATURED DOGS -->
   <section id="featured" class="py-5 bg-light">
@@ -47,17 +38,7 @@ session_start();
     </div>
   </section>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   <!-- HOW -->
-=======
-
-   <!-- HOW -->
->>>>>>> Stashed changes
-=======
-
-   <!-- HOW -->
->>>>>>> Stashed changes
   <section id="kako" class="py-5">
     <div class="container">
       <h2 class="text-center fw-bold mb-5">Kako funkcionira?</h2>

@@ -21,12 +21,12 @@ function load_dog_and_reservations($dog_id, &$reservations, &$reserved, $pdo) {
     $stmt->execute([$dog_id]);
     $dog = $stmt->fetch();
     if(!$dog) return null;
-    $stmt = $pdo->prepare("SELECT id, reserved_for, reserved_by_user FROM reservations WHERE dog_id=? ORDER BY reserved_for");
+    $stmt = $pdo->prepare("SELECT id, reserved_for, time_slot, reserved_by_user FROM reservations WHERE dog_id=? ORDER BY reserved_for");
     $stmt->execute([$dog_id]);
     $reservations = $stmt->fetchAll();
     $reserved = [];
     foreach($reservations as $r){
-        $reserved[$r['reserved_for']] = ['id'=>$r['id'],'user'=>$r['reserved_by_user']];
+        $reserved[$r['reserved_for']][$r['time_slot']] = ['id'=>$r['id'],'user'=>$r['reserved_by_user']];
     }
     return $dog;
 }
@@ -55,30 +55,15 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         $duration = (int)($_POST['duration'] ?? 60);
         $location = $_POST['location'] ?? '';
         $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         if($dog && dog_matches($dog,$duration,$location)) {
             list($date,$slot) = explode('|', $_POST['reserve_slot']);
             if (!isset($reserved[$date][$slot]) && isset($_SESSION['user_id'])) {
                 $pdo->prepare("INSERT INTO reservations(dog_id,reserved_for,time_slot,duration,location,reserved_by_user) VALUES(?,?,?,?,?,?)")
                     ->execute([$dog_id,$date,$slot,$duration,$location,$_SESSION['user_id']]);
                 $feedback = "Rezervirano za $date ($slot).";
-=======
-=======
->>>>>>> Stashed changes
-        if($dog) {
-            $date = $_POST['reserve_date'];
-            if (!isset($reserved[$date]) && isset($_SESSION['user_id'])) {
-                $pdo->prepare("INSERT INTO reservations(dog_id,reserved_for,duration,location,reserved_by_user) VALUES(?,?,?,?,?)")
-                    ->execute([$dog_id,$date,$duration,$location,$_SESSION['user_id']]);
-                $feedback = "Rezervirano za $date.";
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                 $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
             } else {
-                $feedback = isset($reserved[$date]) ? 'Datum je već rezerviran.' : 'Prijavite se za rezervaciju.';
+                $feedback = isset($reserved[$date][$slot]) ? 'Termin je već rezerviran.' : 'Prijavite se za rezervaciju.';
             }
         } else {
             $dog = null;
@@ -192,17 +177,11 @@ $month = date('n');
     <input type="hidden" name="duration" value="<?=$duration?>">
     <input type="hidden" name="location" value="<?=htmlspecialchars($location)?>">
     <?= renderCalendar($year,$month,$reserved) ?>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     <div id="timeOptions" class="d-none mt-3">
       <p class="mb-2">Odabrani datum: <span id="selDate"></span></p>
       <button class="btn btn-outline-primary me-2" id="morningBtn" name="reserve_slot" value="" type="submit">Jutarnja (9:00)</button>
       <button class="btn btn-outline-primary" id="eveningBtn" name="reserve_slot" value="" type="submit">Večernja (18:00)</button>
     </div>
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   </form>
   <?php if (empty($_SESSION['user_id'])): ?>
     <p class="text-warning mt-3">Za rezervaciju se <a href="prijava.php">prijavite</a>.</p>

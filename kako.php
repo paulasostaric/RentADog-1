@@ -19,7 +19,6 @@ session_start();
 
 <main class="container py-5 kako-main">
   <h1 class="fw-bold text-center mb-5">Kako funkcionira?</h1>
-  <!-- Steps -->
   <div class="row g-4 text-center mb-5">
     <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">1</div><h5 class="fw-semibold mb-2">Rezerviraj termin</h5><p>Online kalendar ili telefonski poziv.</p></div></div>
     <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">2</div><h5 class="fw-semibold mb-2">Upoznaj psa</h5><p>Na licu mjesta ti pomažemo odabrati pravog prijatelja.</p></div></div>

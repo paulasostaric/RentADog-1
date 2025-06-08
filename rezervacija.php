@@ -25,7 +25,6 @@
     </div>
     <!-- Calendar -->
     <div class="table-responsive"><table class="table table-bordered text-center align-middle" id="calendarTable"><thead class="table-light"><tr><th>Pon</th><th>Uto</th><th>Sri</th><th>Čet</th><th>Pet</th><th>Sub</th><th>Ned</th></tr></thead><tbody></tbody></table></div>
-    <p class="small text-muted">Crveno = zauzeto.</p>
     <div id="timeOptions" class="d-none mt-3">
       <p class="mb-2">Odabrani datum: <span id="selDate"></span></p>
       <button class="btn btn-outline-primary me-2" id="morningBtn">Jutarnja (9:00)</button>

@@ -10,7 +10,6 @@ session_start();
   <title>ProšećiMe – Početna</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="icon" href="img/paw.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="index.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
@@ -74,6 +73,8 @@ session_start();
 
 
 <style>
+  /* Uklanjamo zadani margin tijela kako bi se hero slika spojila sa sivim blokom */
+  body { margin: 0; }
   /* Primjer: napravimo da strelice budu plave */
   #dogsCarousel .carousel-control-prev-icon,
   #dogsCarousel .carousel-control-next-icon {

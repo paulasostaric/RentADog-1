@@ -50,8 +50,8 @@ $user    = $_SESSION['username'] ?? null;
             </ul>
           </li>
         <?php else: ?>
-          <li class="nav-item"><a class="nav-link <?= ($current==='prijava.php'?'active':'') ?>" href="prijava.php">Prijava</a></li>
-        <?php endif; ?>
+          <li class="nav-item"><a id="loginBtn" class="nav-link <?= ($current==='prijava.php'?'active':'') ?>" href="prijava.php">Prijava</a></li>
+          <?php endif; ?>
       </ul>
     </div>
   </div>

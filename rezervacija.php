@@ -37,7 +37,14 @@
 <?php include('elementi/footer.php')?>
 
 <script>
-  const u=localStorage.getItem('username');if(u){document.getElementById('loginBtn').textContent=u;document.getElementById('bookingForm').classList.remove('d-none');}else{document.getElementById('authNotice').classList.remove('d-none');}
+  const u = localStorage.getItem('username');
+  const btn = document.getElementById('loginBtn');
+  if (u) {
+    if (btn) btn.textContent = u;
+    document.getElementById('bookingForm').classList.remove('d-none');
+  } else {
+    document.getElementById('authNotice').classList.remove('d-none');
+  }
   // simple calendar
   function genCal(){
     const tbody=document.querySelector('#calendarTable tbody');

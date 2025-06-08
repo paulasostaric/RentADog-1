@@ -40,8 +40,14 @@
   </div>
 </main>
 
- <?php include('elementi/footer.php')?>
+<?php include('elementi/footer.php')?>
 
-<script>const u=localStorage.getItem('username');if(u){document.getElementById('loginBtn').textContent=u;}</script>
+<script>
+const u = localStorage.getItem('username');
+const btn = document.getElementById('loginBtn');
+if (u && btn) {
+  btn.textContent = u;
+}
+</script>
 </body>
 </html>

@@ -17,7 +17,7 @@ session_start();
 <body>
 <?php include('elementi/nav.php')?>
 
-<main class="container py-5">
+<main class="container py-5 kako-main">
   <h1 class="fw-bold text-center mb-5">Kako funkcionira?</h1>
   <!-- Steps -->
   <div class="row g-4 text-center mb-5">
@@ -25,7 +25,7 @@ session_start();
     <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">2</div><h5 class="fw-semibold mb-2">Upoznaj psa</h5><p>Na licu mjesta ti pomažemo odabrati pravog prijatelja.</p></div></div>
     <div class="col-md-4"><div class="p-4 border rounded-4 h-100"><div class="display-5 mb-3">3</div><h5 class="fw-semibold mb-2">Pokloni šetnju</h5><p>Šetnja, igra i povratak veselog psa.</p></div></div>
   </div>
-  <p class="lead text-center mb-5">Nakon što rezervirate termin i dođete u Dumovec, naši volonteri će vam pokazati osnovne upute o psu kojeg vodite. Šetnja obično traje sat vremena, a po povratku psa možete nagraditi poslasticom i dogovoriti novi dolazak.</p>
+  <p class="text-center mb-5">Nakon što rezervirate termin i dođete u Dumovec, naši volonteri će vam pokazati osnovne upute o psu kojeg vodite. Šetnja obično traje sat vremena, a po povratku psa možete nagraditi poslasticom i dogovoriti novi dolazak.</p>
   <div class="row align-items-center mb-5">
     <div class="col-md-6">
       <p>Program šetnji nastao je kako bismo psima pružili više druženja i lakšu prilagodbu na gradske uvjete. Volonteri vam uvijek stoje na raspolaganju za savjete o ponašanju i skrbi o psima.</p>

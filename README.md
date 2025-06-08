@@ -1,7 +1,6 @@
 # ProšećiMe
 
-Ovaj projekt predstavlja jednostavnu web aplikaciju za rezervaciju šetnje pasa iz skloništa. Svi PHP
-fajlovi sada sadrže komentare koji opisuju funkciju koda. U nastavku je kratak opis
+Ovaj projekt predstavlja jednostavnu web aplikaciju za rezervaciju šetnje pasa iz skloništa. U nastavku je kratak opis
 svake važne stranice i njezine uloge.
 
 ## Pregled stranica

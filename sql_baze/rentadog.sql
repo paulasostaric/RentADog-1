@@ -44,25 +44,25 @@ CREATE TABLE `dogs` (
 
 INSERT INTO `dogs` (`id`, `name`, `breed`, `dob`, `temperament`, `image`, `durations`, `locations`) VALUES
 (1, 'Campi', 'Križani terijer', '2018-06-05', 'Energična', 'campi.jpeg', '60', 'park'),
-(2, 'Zetta', 'Križani terijer', '2023-06-08', 'Mirna', 'zetta.jpeg', '60,90', 'park,Šuma'),
-(3, 'Blanco', 'Križani terijer', '2025-03-03', 'Energičan', 'blanco.jpeg', '30,60', 'park'),
-(4, 'Sniper', 'Križani ovčar', '2018-07-24', 'Miran', 'sniper.jpeg', '60', 'Šuma'),
-(5, 'Tijara', 'Križani terijer', '2025-02-25', 'Energična', 'tijara.jpeg', '30,60', 'park'),
-(6, 'Archy', 'Križani ovčar', '2019-12-10', 'Miran', 'archy.jpeg', '60', 'park,grad'),
-(7, 'Sally', 'Križani pekinezer', '2025-01-10', 'Mirna', 'sally.jpeg', '60', 'grad'),
-(8, 'Daša', 'Križani gonič', '2023-08-15', 'Energična', 'dasa.jpeg', '60,90', 'Šuma'),
+(2, 'Zetta', 'Križani terijer', '2023-06-08', 'Mirna', 'zetta.jpeg', '60,90', 'park,suma'),
+(3, 'Blanco', 'Križani terijer', '2025-03-03', 'Energičan', 'blanco.jpeg', '30,60,90', 'park,suma,grad'),
+(4, 'Sniper', 'Križani ovčar', '2018-07-24', 'Miran', 'sniper.jpeg', '60', 'suma'),
+(5, 'Tijara', 'Križani terijer', '2025-02-25', 'Energična', 'tijara.jpeg', '30,60,90', 'park,suma,grad'),
+(6, 'Archy', 'Križani ovčar', '2019-12-10', 'Miran', 'archy.jpeg', '30,60,90', 'park,suma,grad'),
+(7, 'Sally', 'Križani pekinezer', '2025-01-10', 'Mirna', 'sally.jpeg', '30,60,90', 'park,suma,grad'),
+(8, 'Daša', 'Križani gonič', '2023-08-15', 'Energična', 'dasa.jpeg', '60,90', 'suma'),
 (9, 'Chico', 'Križani terijer', '2025-03-03', 'Energičan', 'chico.jpeg', '30,60', 'park'),
 (10, 'Brut', 'Križanac', '2019-10-13', 'Miran', 'brut.jpeg', '60', 'grad'),
-(11, 'Maya', 'Križani sibirski husky', '2015-01-16', 'Mirna', 'maya.jpeg', '60,90', 'Šuma'),
+(11, 'Maya', 'Križani sibirski husky', '2015-01-16', 'Mirna', 'maya.jpeg', '60,90', 'suma'),
 (12, 'Ariel', 'Križana doga', '2022-11-22', 'Energična', 'ariel.jpeg', '60', 'park'),
 (13, 'Melly', 'Križani pekinezer', '2015-03-29', 'Mirna', 'melly.jpeg', '60', 'grad'),
-(14, 'Šime', 'Križani rottweiler', '2023-06-20', 'Energičan', 'sime.jpeg', '60,90', 'Šuma'),
+(14, 'Šime', 'Križani rottweiler', '2023-06-20', 'Energičan', 'sime.jpeg', '60,90', 'suma'),
 (15, 'Zora', 'Križani ovčar', '2025-03-01', 'Energična', 'zora.jpeg', '30,60', 'park'),
-(16, 'Lili', 'Križani šarplaninac', '2017-03-01', 'Mirna', 'lili.jpeg', '60', 'Šuma'),
+(16, 'Lili', 'Križani šarplaninac', '2017-03-01', 'Mirna', 'lili.jpeg', '60', 'suma'),
 (17, 'Ella', 'Križani ptičar', '2012-03-15', 'Mirna', 'ella.jpeg', '60', 'park'),
 (18, 'Prometej', 'Križani terijer', '2012-05-07', 'Miran', 'prometej.jpeg', '60', 'grad'),
 (19, 'Nelly', 'Križani ovčar', '2011-10-26', 'Mirna', 'nelly.jpeg', '60', 'park'),
-(20, 'Lora', 'Križani terijer', '2020-10-04', 'Mirna', 'lora.jpeg', '60', 'Šuma');
+(20, 'Lora', 'Križani terijer', '2020-10-04', 'Mirna', 'lora.jpeg', '60', 'suma');
 
 -- --------------------------------------------------------
 
@@ -88,7 +88,7 @@ CREATE TABLE `reservations` (
 
 INSERT INTO `reservations` (`id`, `dog_id`, `reserved_for`, `time_slot`, `duration`, `location`, `reserved_by_user`, `completed`, `created_at`) VALUES
 (5, 2, '2025-06-10', 'morning', 60, 'park', 2, 0, '2025-06-07 13:24:13'),
-(6, 20, '2025-06-17', 'evening', 60, 'Šuma', 1, 0, '2025-06-07 15:28:39');
+(6, 20, '2025-06-17', 'evening', 60, 'suma', 1, 0, '2025-06-07 15:28:39');
 
 -- --------------------------------------------------------
 

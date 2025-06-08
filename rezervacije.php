@@ -162,7 +162,7 @@ $month = date('n');
         <input type="hidden" name="dog_id" value="<?=$d['id']?>">
         <input type="hidden" name="duration" value="<?=$duration?>">
         <input type="hidden" name="location" value="<?=htmlspecialchars($location)?>">
-        <button class="btn btn-primary">Odaberi</button>
+        <button class="btn btn-primary" type="submit">Odaberi</button>
       </form>
     </div>
   <?php endforeach; ?>
@@ -182,8 +182,8 @@ $month = date('n');
     <?= renderCalendar($year,$month,$reserved) ?>
     <div id="timeOptions" class="d-none mt-3">
       <p class="mb-2">Odabrani datum: <span id="selDate"></span></p>
-      <button class="btn btn-outline-primary me-2" id="morningBtn" name="reserve_slot" value="">Jutarnja (9:00)</button>
-      <button class="btn btn-outline-primary" id="eveningBtn" name="reserve_slot" value="">Večernja (18:00)</button>
+      <button class="btn btn-outline-primary me-2" id="morningBtn" name="reserve_slot" value="" type="submit">Jutarnja (9:00)</button>
+      <button class="btn btn-outline-primary" id="eveningBtn" name="reserve_slot" value="" type="submit">Večernja (18:00)</button>
     </div>
   </form>
   <?php if (empty($_SESSION['user_id'])): ?>

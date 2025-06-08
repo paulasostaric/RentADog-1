@@ -13,13 +13,19 @@
  <?php include('elementi/nav.php')?>
 
 
-<main class="container py-5">
-  <h1 class="fw-bold text-center mb-4">Naša priča</h1>
-  <p class="lead">Projekt ProšećiMe pokrenut je 2024. kako bismo sklonišnim psima pružili više šetnji i brže udomljenje.</p>
-  <p>Tijekom godina okupili smo stotine volontera i organizirali tisuće šetnji koje pse pripremaju za novo obiteljsko okruženje.</p>
-  <p class="mb-5">Svaki novi šetač pomaže u socijalizaciji pasa i povećava im šanse za pronalaskom trajnog doma.</p>
-  <div class="ratio ratio-16x9 mb-4" style="max-width:600px;margin:0 auto;">
-    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video" allowfullscreen></iframe>
+<main class="container py-5 about-us">
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <h1 class="fw-bold mb-4">Naša priča</h1>
+      <p>Projekt ProšećiMe pokrenut je 2024. kako bismo sklonišnim psima pružili više šetnji i brže udomljenje.</p>
+      <p>Tijekom godina okupili smo stotine volontera i organizirali tisuće šetnji koje pse pripremaju za novo obiteljsko okruženje.</p>
+      <p class="mb-0">Svaki novi šetač pomaže u socijalizaciji pasa i povećava im šanse za pronalaskom trajnog doma.</p>
+    </div>
+    <div class="col-md-6 text-md-end text-center">
+      <div class="ratio ratio-16x9" style="max-width:600px; margin-left:auto;">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video" allowfullscreen></iframe>
+      </div>
+    </div>
   </div>
   <h2 class="text-center fw-bold mb-4">Recenzije šetača</h2>
   <div class="row g-4">

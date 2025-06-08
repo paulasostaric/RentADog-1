@@ -10,6 +10,12 @@ $duration = 60;
 $location = '';
 $feedback = '';
 
+function dog_matches($dog,$duration,$location){
+    $durs=array_map('intval',array_map('trim',explode(',',$dog['durations'])));
+    $locs=array_map('mb_strtolower',array_map('trim',explode(',',$dog['locations'])));
+    return in_array((int)$duration,$durs,true) && in_array(mb_strtolower($location),$locs,true);
+}
+
 function load_dog_and_reservations($dog_id, &$reservations, &$reserved, $pdo) {
     $stmt = $pdo->prepare("SELECT * FROM dogs WHERE id=?");
     $stmt->execute([$dog_id]);
@@ -35,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         } else {
             $stmt = $pdo->query("SELECT * FROM dogs WHERE temperament LIKE 'Energi%'");
         }
-        $dogs = $stmt->fetchAll();
+        $dogs = array_filter($stmt->fetchAll(), fn($d)=>dog_matches($d,$duration,$location));
         if($dogs) {
             if(count($dogs) === 1) {
                 $d = $dogs[0];
@@ -49,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         $duration = (int)($_POST['duration'] ?? 60);
         $location = $_POST['location'] ?? '';
         $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
-        if($dog) {
+        if($dog && dog_matches($dog,$duration,$location)) {
             list($date,$slot) = explode('|', $_POST['reserve_slot']);
             if (!isset($reserved[$date][$slot]) && isset($_SESSION['user_id'])) {
                 $pdo->prepare("INSERT INTO reservations(dog_id,reserved_for,time_slot,duration,location,reserved_by_user) VALUES(?,?,?,?,?,?)")
@@ -59,12 +65,20 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             } else {
                 $feedback = isset($reserved[$date][$slot]) ? 'Termin je već rezerviran.' : 'Prijavite se za rezervaciju.';
             }
+        } else {
+            $dog = null;
+            $feedback = 'Odabrano trajanje ili lokacija nisu dostupni za ovog psa.';
         }
     } elseif(isset($_POST['dog_id'])) {
         $dog_id = (int)$_POST['dog_id'];
         $duration = (int)($_POST['duration'] ?? $duration);
         $location = $_POST['location'] ?? $location;
         $dog = load_dog_and_reservations($dog_id, $reservations, $reserved, $pdo);
+        if($dog && !dog_matches($dog,$duration,$location)){
+            $feedback = 'Odabrano trajanje ili lokacija nisu dostupni za ovog psa.';
+            $dog = null;
+            $available_dogs = [];
+        }
     }
 }
 

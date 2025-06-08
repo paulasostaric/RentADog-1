@@ -20,7 +20,7 @@ svake važne stranice i njezine uloge.
 - **kako.php** – objašnjava proces „najma“ psa korak po korak.
 - **onama.php** – kratka priča o projektu i recenzije šetača.
 - **kontakt.php** – radno vrijeme, obrazac i lokacija skloništa.
-- **rezervacija.php** – starija statična verzija kalendara za rezervaciju.
+
 
 ## Baza podataka
 
